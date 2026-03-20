@@ -1,20 +1,22 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Nandan Consumer Equipments
 
-# Run and deploy your AI Studio app
+This repo is split into two apps:
 
-This contains everything you need to run your app locally.
+- `frontend/` - Vite + React client
+- `backend/` - Express API server
 
-View your app in AI Studio: https://ai.studio/apps/a345b159-d1f0-4ae2-95ac-3954a1491a42
+## Frontend
 
-## Run Locally
+```powershell
+cd frontend
+npm install
+npm run dev
+```
 
-**Prerequisites:**  Node.js
+## Backend
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```powershell
+cd backend
+npm install
+npm run dev
+```
