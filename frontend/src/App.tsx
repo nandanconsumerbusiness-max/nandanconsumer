@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Phone, Mail, MapPin, ChevronRight, Facebook, Linkedin, Twitter, ShieldCheck, Zap, Home as HomeIcon, Eye, EyeOff, Info } from 'lucide-react';
+import { Menu, X, Phone, Mail, MapPin, ChevronRight, Facebook, Linkedin, Twitter, ShieldCheck, Zap, Home as HomeIcon, Eye, EyeOff, Info, UserCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import logo from './assets/logo.jpeg';
 
 // --- Types ---
-export type Page = 'home' | 'about' | 'services' | 'products' | 'certificates' | 'signup' | 'contact' | 'privacy' | 'terms';
+export type Page = 'home' | 'about' | 'services' | 'products' | 'certificates' | 'signup' | 'contact' | 'privacy' | 'terms' | 'dashboard';
 
 // --- Components ---
 
-const Navbar = ({ currentPage, setCurrentPage }: { currentPage: Page, setCurrentPage: (p: Page) => void }) => {
+const Navbar = ({
+  currentPage,
+  setCurrentPage,
+  isLoggedIn,
+}: {
+  currentPage: Page;
+  setCurrentPage: (p: Page) => void;
+  isLoggedIn: boolean;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -56,12 +64,21 @@ const Navbar = ({ currentPage, setCurrentPage }: { currentPage: Page, setCurrent
               </button>
             ))}
             <div className="flex items-center gap-3">
-              <button
-                onClick={() => setCurrentPage('signup')}
-                className="bg-slate-900 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-slate-800 transition-all duration-300 shadow-sm"
-              >
-                Sign Up
-              </button>
+              {isLoggedIn ? (
+                <button
+                  onClick={() => setCurrentPage('dashboard')}
+                  className="bg-slate-900 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-slate-800 transition-all duration-300 shadow-sm"
+                >
+                  Profile
+                </button>
+              ) : (
+                <button
+                  onClick={() => setCurrentPage('signup')}
+                  className="bg-slate-900 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-slate-800 transition-all duration-300 shadow-sm"
+                >
+                  Sign Up
+                </button>
+              )}
             </div>
           </div>
 
@@ -812,7 +829,13 @@ const ContactPage = () => {
   );
 };
 
-const SignUpPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
+const SignUpPage = ({
+  setCurrentPage,
+  setIsLoggedIn,
+}: {
+  setCurrentPage: (p: Page) => void;
+  setIsLoggedIn: (v: boolean) => void;
+}) => {
   const [formData, setFormData] = useState({
     phone: '',
     password: '',
@@ -826,35 +849,146 @@ const SignUpPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) =
     mobile: '',
     password: '',
     aboKnown: 'yes' as 'yes' | 'no',
+    pincode: '',
+    aboId: '',
   });
+  const [pinVerified, setPinVerified] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState<string | null>(null);
+  const [showReset, setShowReset] = useState(false);
+  const [resetData, setResetData] = useState({ mobile: '', otp: '', newPassword: '' });
+  const [otpInfo, setOtpInfo] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const API_BASE = (import.meta as any).env?.VITE_API_URL || 'http://localhost:5000';
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
-    setFormData({
-      phone: '',
-      password: '',
-    });
+    setLoginSuccess(null);
+    try {
+      const res = await fetch(`${API_BASE}/api/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mobile: formData.phone, password: formData.password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || 'Login failed.');
+      }
+      const userPayload = data?.user || { mobile: formData.phone };
+      localStorage.setItem('nandan_auth', JSON.stringify(userPayload));
+      setIsLoggedIn(true);
+      setLoginSuccess('Login successful.');
+      setCurrentPage('dashboard');
+      setFormData({ phone: '', password: '' });
+    } catch (err: any) {
+      setError(err?.message || 'Login failed.');
+    }
   };
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
-    setRegisterData({
-      firstName: '',
-      middleName: '',
-      lastName: '',
-      email: '',
-      mobile: '',
-      password: '',
-      aboKnown: 'yes',
-    });
+    setError('');
+    setLoginSuccess(null);
+    if (!registerData.firstName || !registerData.email || !registerData.mobile || !registerData.password) {
+      setError('Please fill all required fields.');
+      return;
+    }
+    if (registerData.aboKnown === 'yes' && !registerData.aboId) {
+      setError('Please enter the Business Owner number.');
+      return;
+    }
+    if (registerData.aboKnown === 'no') {
+      if (!pinVerified) {
+        setError('Please verify your pincode to see available owners.');
+        return;
+      }
+      if (!registerData.aboId) {
+        setError('Please select an owner from the list.');
+        return;
+      }
+    }
+    try {
+      const res = await fetch(`${API_BASE}/api/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: registerData.firstName,
+          middleName: registerData.middleName,
+          lastName: registerData.lastName,
+          email: registerData.email,
+          mobile: registerData.mobile,
+          password: registerData.password,
+          businessOwnerKnown: registerData.aboKnown,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || 'Registration failed.');
+      }
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 5000);
+      setRegisterData({
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        email: '',
+        mobile: '',
+        password: '',
+        aboKnown: 'yes',
+        pincode: '',
+        aboId: '',
+      });
+      setPinVerified(false);
+    } catch (err: any) {
+      setError(err?.message || 'Registration failed.');
+    }
+  };
+
+  const handleRequestOtp = async () => {
+    setError('');
+    setOtpInfo(null);
+    try {
+      const res = await fetch(`${API_BASE}/api/otp/request`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mobile: resetData.mobile }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || 'OTP request failed.');
+      }
+      setOtpInfo(`OTP sent. (Demo OTP: ${data.otp})`);
+    } catch (err: any) {
+      setError(err?.message || 'OTP request failed.');
+    }
+  };
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    try {
+      const res = await fetch(`${API_BASE}/api/otp/reset`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mobile: resetData.mobile,
+          otp: resetData.otp,
+          newPassword: resetData.newPassword,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || 'Reset failed.');
+      }
+      setOtpInfo('Password reset successful. You can now sign in.');
+      setShowReset(false);
+      setResetData({ mobile: '', otp: '', newPassword: '' });
+    } catch (err: any) {
+      setError(err?.message || 'Reset failed.');
+    }
   };
 
   return (
@@ -874,10 +1008,10 @@ const SignUpPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) =
                 <div className="text-center">
                   <h1 className="text-3xl font-bold text-slate-900 mb-4">Welcome!</h1>
                   <p className="text-slate-600 mb-4">
-                    To create an Amway Business Account you are required to know an Amway Business Owner.
+                    To create a Business Account you are required to know a Business Owner.
                   </p>
                   <p className="text-slate-600 mb-6">
-                    You must be at least 18 years old and an Indian citizen to register with Amway India.
+                    You must be at least 18 years old and an Indian citizen to register with Nandan Consumer Equipments.
                   </p>
                 </div>
                 <form onSubmit={handleRegisterSubmit} className="space-y-5">
@@ -938,9 +1072,12 @@ const SignUpPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) =
                       placeholder="Example - My@password1"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700">Do you know a Business Owner?</label>
-                    <div className="flex items-center gap-6 text-sm text-slate-700">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <label className="text-sm font-semibold text-slate-700">Owner (ABO)?</label>
+                      <span className="text-xs font-semibold text-slate-500 border border-slate-300 rounded-full px-2 py-0.5">i</span>
+                    </div>
+                    <div className="flex items-center gap-8 text-sm text-slate-700">
                       <label className="flex items-center gap-2">
                         <input
                           type="radio"
@@ -960,6 +1097,83 @@ const SignUpPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) =
                         No
                       </label>
                     </div>
+                    {registerData.aboKnown === 'yes' ? (
+                      <div className="space-y-2">
+                        <label className="text-sm font-semibold text-slate-700">Enter Business Owner Number</label>
+                        <input
+                          type="text"
+                          required
+                          value={registerData.aboId}
+                          onChange={(e) => setRegisterData({ ...registerData, aboId: e.target.value })}
+                          className="w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm"
+                          placeholder="Business Owner Number"
+                        />
+                      </div>
+                    ) : (
+                      <>
+                        <div className="space-y-2">
+                          <label className="text-sm font-semibold text-slate-700">Please enter Pincode</label>
+                          <input
+                            type="text"
+                            value={registerData.pincode}
+                            onChange={(e) => {
+                              setRegisterData({ ...registerData, pincode: e.target.value });
+                              setPinVerified(false);
+                            }}
+                            className="w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm"
+                            placeholder="Pincode"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setPinVerified(!!registerData.pincode)}
+                            className="w-full rounded-full border border-slate-300 py-2.5 text-sm font-semibold text-slate-900 hover:bg-slate-50"
+                          >
+                            Verify
+                          </button>
+                          <p className="text-xs text-slate-500 flex items-center gap-2">
+                            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-300 text-slate-500">!</span>
+                            Please select one from the suggested owners to proceed with the registration.
+                          </p>
+                        </div>
+                        {pinVerified ? (
+                          (() => {
+                            const abos = [
+                              { id: '14578', name: "M/S KAPOOR'S NETWORK MARKETING", place: 'Bangalore rural', initials: 'MK', pin: '560001' },
+                              { id: '26576', name: 'SAMUEL, SARAH & REBA HANNAH', place: 'BANGALORE', initials: 'SS', pin: '560002' },
+                              { id: '11223', name: 'SUJEER, RAVI & JANAKI', place: 'BANGALORE', initials: 'SJ', pin: '560003' },
+                            ];
+                            const matches = abos.filter((abo) => !registerData.pincode || abo.pin.startsWith(registerData.pincode));
+                            if (matches.length === 0) {
+                              return <p className="text-xs text-slate-500">No owners found for this pincode. Please check and try again.</p>;
+                            }
+                            return (
+                              <div className="space-y-3 pt-2">
+                                {matches.map((abo) => (
+                                  <label key={abo.id} className="flex items-center gap-4 rounded-2xl border border-slate-200 p-3 cursor-pointer hover:bg-slate-50">
+                                    <input
+                                      type="radio"
+                                      name="aboId"
+                                      checked={registerData.aboId === abo.id}
+                                      onChange={() => setRegisterData({ ...registerData, aboId: abo.id })}
+                                    />
+                                    <div className="h-12 w-12 rounded-full border border-slate-300 flex items-center justify-center text-sm font-semibold text-slate-700">
+                                      {abo.initials}
+                                    </div>
+                                    <div className="text-sm">
+                                      <div className="font-semibold text-slate-900">{abo.name}</div>
+                                      <div className="text-slate-600">Owner ID: {abo.id}</div>
+                                      <div className="text-slate-500">{abo.place}</div>
+                                    </div>
+                                  </label>
+                                ))}
+                              </div>
+                            );
+                          })()
+                        ) : (
+                          <p className="text-xs text-slate-500">Verify your pincode to see available owners.</p>
+                        )}
+                      </>
+                    )}
                   </div>
                   <button
                     type="submit"
@@ -967,6 +1181,7 @@ const SignUpPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) =
                   >
                     Submit
                   </button>
+                  {error && <div className="text-sm text-rose-600 font-semibold">{error}</div>}
                 </form>
                 <div className="mt-6 flex items-center justify-center gap-8 text-xs font-semibold text-slate-600">
                   <button onClick={() => setCurrentPage('terms')} className="hover:text-slate-800">Terms &amp; Conditions</button>
@@ -979,7 +1194,7 @@ const SignUpPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) =
                   <h1 className="text-3xl font-bold text-slate-900">Sign in</h1>
                 </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-slate-700">Mobile Number</label>
                 <div className="flex items-center gap-3 rounded-2xl border border-slate-300 px-4 py-3">
@@ -1015,12 +1230,17 @@ const SignUpPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) =
                   </button>
                 </div>
               </div>
-              <div className="text-right">
-                <button type="button" className="text-sm font-semibold text-slate-700 hover:text-slate-900 underline underline-offset-4">
-                  Forgot Password
-                </button>
-              </div>
+                <div className="text-right">
+                  <button
+                    type="button"
+                    onClick={() => setShowReset(true)}
+                    className="text-sm font-semibold text-slate-700 hover:text-slate-900 underline underline-offset-4"
+                  >
+                    Forgot Password
+                  </button>
+                </div>
               {error && <div className="text-sm text-rose-600 font-semibold">{error}</div>}
+              {loginSuccess && <div className="text-sm text-emerald-600 font-semibold">{loginSuccess}</div>}
               <button
                 type="submit"
                 className="w-full rounded-full bg-slate-400 py-3 text-sm font-bold uppercase tracking-widest text-white transition-all hover:bg-slate-500"
@@ -1028,6 +1248,53 @@ const SignUpPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) =
                 Sign In
               </button>
             </form>
+
+            {showReset && (
+              <form onSubmit={handleResetPassword} className="mt-8 space-y-4">
+                <h3 className="text-lg font-bold text-slate-900">Reset Password</h3>
+                <div className="flex items-center gap-3 rounded-2xl border border-slate-300 px-4 py-3">
+                  <span className="text-slate-500 font-semibold">+91</span>
+                  <input
+                    type="tel"
+                    required
+                    value={resetData.mobile}
+                    onChange={(e) => setResetData({ ...resetData, mobile: e.target.value })}
+                    className="w-full bg-transparent text-slate-900 placeholder:text-slate-400 focus:outline-none"
+                    placeholder="Mobile number"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={handleRequestOtp}
+                  className="w-full rounded-full border border-slate-300 py-2.5 text-sm font-semibold text-slate-900 hover:bg-slate-50"
+                >
+                  Send OTP
+                </button>
+                <input
+                  type="text"
+                  required
+                  value={resetData.otp}
+                  onChange={(e) => setResetData({ ...resetData, otp: e.target.value })}
+                  className="w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm"
+                  placeholder="Enter OTP"
+                />
+                <input
+                  type="password"
+                  required
+                  value={resetData.newPassword}
+                  onChange={(e) => setResetData({ ...resetData, newPassword: e.target.value })}
+                  className="w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm"
+                  placeholder="New Password"
+                />
+                <button
+                  type="submit"
+                  className="w-full rounded-full bg-slate-900 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
+                >
+                  Reset Password
+                </button>
+                {otpInfo && <div className="text-xs text-slate-600">{otpInfo}</div>}
+              </form>
+            )}
 
             <div className="mt-8 text-center text-sm font-semibold text-slate-700">Sign in with</div>
             <div className="mt-4 flex items-center justify-center gap-4">
@@ -1241,14 +1508,110 @@ const TermsPage = () => {
   );
 };
 
+const DashboardPage = ({
+  setCurrentPage,
+  setIsLoggedIn,
+}: {
+  setCurrentPage: (p: Page) => void;
+  setIsLoggedIn: (v: boolean) => void;
+}) => {
+  const [user, setUser] = useState<{ firstName?: string; mobile?: string } | null>(null);
+
+  useEffect(() => {
+    const raw = localStorage.getItem('nandan_auth');
+    if (raw) {
+      try {
+        setUser(JSON.parse(raw));
+      } catch {
+        setUser(null);
+      }
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('nandan_auth');
+    setIsLoggedIn(false);
+    setCurrentPage('signup');
+  };
+
+  return (
+    <div className="pt-16">
+      <section className="bg-white py-14 text-slate-900 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-bold mb-2">Dashboard</h1>
+          <p className="text-slate-600">
+            Welcome{user?.firstName ? `, ${user.firstName}` : ''}!
+          </p>
+        </div>
+      </section>
+
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="bg-white border border-slate-200 rounded-2xl p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <UserCircle size={36} className="text-slate-600" />
+              <div>
+                <h3 className="text-lg font-bold text-slate-900">Profile</h3>
+                <p className="text-sm text-slate-600">Your account information</p>
+              </div>
+            </div>
+            <div className="text-sm text-slate-600 space-y-2">
+              <div><span className="font-semibold text-slate-700">Name:</span> {user?.firstName || 'User'}</div>
+              <div><span className="font-semibold text-slate-700">Mobile:</span> {user?.mobile || '-'}</div>
+            </div>
+            <button
+              onClick={() => setCurrentPage('contact')}
+              className="mt-6 w-full rounded-full border border-slate-300 py-2.5 text-sm font-semibold text-slate-900 hover:bg-slate-50"
+            >
+              Update Profile
+            </button>
+          </div>
+
+          <div className="bg-white border border-slate-200 rounded-2xl p-6">
+            <h3 className="text-lg font-bold text-slate-900 mb-4">Quick Links</h3>
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <button onClick={() => setCurrentPage('home')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Home</button>
+              <button onClick={() => setCurrentPage('about')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">About</button>
+              <button onClick={() => setCurrentPage('services')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Services</button>
+              <button onClick={() => setCurrentPage('products')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Products</button>
+              <button onClick={() => setCurrentPage('certificates')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Certificates</button>
+              <button onClick={() => setCurrentPage('contact')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Contact</button>
+            </div>
+          </div>
+
+          <div className="bg-white border border-slate-200 rounded-2xl p-6">
+            <h3 className="text-lg font-bold text-slate-900 mb-4">Account</h3>
+            <p className="text-sm text-slate-600 mb-6">Manage your access and session.</p>
+            <button
+              onClick={handleLogout}
+              className="w-full rounded-full bg-slate-900 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
 // --- Main App ---
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentPage]);
+
+  useEffect(() => {
+    const raw = localStorage.getItem('nandan_auth');
+    if (raw) {
+      setIsLoggedIn(true);
+      setCurrentPage('dashboard');
+    }
+  }, []);
 
   const renderPage = () => {
     switch (currentPage) {
@@ -1257,17 +1620,18 @@ export default function App() {
       case 'services': return <ServicesPage setCurrentPage={setCurrentPage} />;
       case 'products': return <ComingSoonPage title="Products" />;
       case 'certificates': return <CertificatesPage />;
-      case 'signup': return <SignUpPage setCurrentPage={setCurrentPage} />;
+      case 'signup': return <SignUpPage setCurrentPage={setCurrentPage} setIsLoggedIn={setIsLoggedIn} />;
       case 'contact': return <ContactPage />;
       case 'privacy': return <PrivacyPolicyPage />;
       case 'terms': return <TermsPage />;
+      case 'dashboard': return <DashboardPage setCurrentPage={setCurrentPage} setIsLoggedIn={setIsLoggedIn} />;
       default: return <HomePage setCurrentPage={setCurrentPage} />;
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col font-sans">
-      <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} isLoggedIn={isLoggedIn} />
       <main className="flex-grow">
         <AnimatePresence mode="wait">
           <motion.div
