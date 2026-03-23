@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import logo from './assets/logo.jpeg';
 
 // --- Types ---
-export type Page = 'home' | 'about' | 'services' | 'products' | 'certificates' | 'signup' | 'contact' | 'privacy';
+export type Page = 'home' | 'about' | 'services' | 'products' | 'certificates' | 'signup' | 'contact' | 'privacy' | 'terms';
 
 // --- Components ---
 
@@ -187,7 +187,7 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
           <p>© 2026 NANDAN CONSUMER EQUIPMENTS PRIVATE LIMITED. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <button onClick={() => setCurrentPage('privacy')} className="hover:text-slate-900 transition-colors">Privacy Policy</button>
-            <a href="#" className="hover:text-slate-900 transition-colors">Terms of Service</a>
+            <button onClick={() => setCurrentPage('terms')} className="hover:text-slate-900 transition-colors">Terms of Service</button>
           </div>
         </div>
       </div>
@@ -812,10 +812,20 @@ const ContactPage = () => {
   );
 };
 
-const SignUpPage = () => {
+const SignUpPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
   const [formData, setFormData] = useState({
     phone: '',
     password: '',
+  });
+  const [registerType, setRegisterType] = useState<'preferred' | 'business' | null>(null);
+  const [registerData, setRegisterData] = useState({
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    email: '',
+    mobile: '',
+    password: '',
+    aboKnown: 'yes' as 'yes' | 'no',
   });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
@@ -832,14 +842,142 @@ const SignUpPage = () => {
     });
   };
 
+  const handleRegisterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 5000);
+    setRegisterData({
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      email: '',
+      mobile: '',
+      password: '',
+      aboKnown: 'yes',
+    });
+  };
+
   return (
     <div className="pt-16 bg-white">
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto w-full max-w-md rounded-[28px] border border-slate-200 bg-white p-8 shadow-[0_30px_60px_-40px_rgba(15,23,42,0.4)]">
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold text-slate-900">Sign in</h1>
-            </div>
+            {registerType ? (
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setRegisterType(null)}
+                  className="mb-6 text-sm font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  ← Back
+                </button>
+                <div className="text-center">
+                  <h1 className="text-3xl font-bold text-slate-900 mb-4">Welcome!</h1>
+                  <p className="text-slate-600 mb-4">
+                    To create an Amway Business Account you are required to know an Amway Business Owner.
+                  </p>
+                  <p className="text-slate-600 mb-6">
+                    You must be at least 18 years old and an Indian citizen to register with Amway India.
+                  </p>
+                </div>
+                <form onSubmit={handleRegisterSubmit} className="space-y-5">
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-slate-700">First and Middle Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={registerData.firstName}
+                      onChange={(e) => setRegisterData({ ...registerData, firstName: e.target.value })}
+                      className="w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm"
+                      placeholder="Please enter the name as mentioned in your ID proof."
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-slate-700">Last Name (Optional)</label>
+                    <input
+                      type="text"
+                      value={registerData.lastName}
+                      onChange={(e) => setRegisterData({ ...registerData, lastName: e.target.value })}
+                      className="w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm"
+                      placeholder="Last Name"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-slate-700">Email Address</label>
+                    <input
+                      type="email"
+                      required
+                      value={registerData.email}
+                      onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
+                      className="w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm"
+                      placeholder="example@mail.com"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-slate-700">Mobile Number</label>
+                    <div className="flex items-center gap-3 rounded-2xl border border-slate-300 px-4 py-3">
+                      <span className="text-slate-500 font-semibold">+91</span>
+                      <input
+                        type="tel"
+                        required
+                        value={registerData.mobile}
+                        onChange={(e) => setRegisterData({ ...registerData, mobile: e.target.value })}
+                        className="w-full bg-transparent text-slate-900 placeholder:text-slate-400 focus:outline-none"
+                        placeholder="Mobile Number will be used as your login ID"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-slate-700">Create Password</label>
+                    <input
+                      type="password"
+                      required
+                      value={registerData.password}
+                      onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
+                      className="w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm"
+                      placeholder="Example - My@password1"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-slate-700">Do you know a Business Owner?</label>
+                    <div className="flex items-center gap-6 text-sm text-slate-700">
+                      <label className="flex items-center gap-2">
+                        <input
+                          type="radio"
+                          name="referral"
+                          checked={registerData.aboKnown === 'yes'}
+                          onChange={() => setRegisterData({ ...registerData, aboKnown: 'yes' })}
+                        />
+                        Yes
+                      </label>
+                      <label className="flex items-center gap-2">
+                        <input
+                          type="radio"
+                          name="referral"
+                          checked={registerData.aboKnown === 'no'}
+                          onChange={() => setRegisterData({ ...registerData, aboKnown: 'no' })}
+                        />
+                        No
+                      </label>
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full rounded-full border-2 border-slate-900 py-3 text-sm font-bold uppercase tracking-widest text-slate-900"
+                  >
+                    Submit
+                  </button>
+                </form>
+                <div className="mt-6 flex items-center justify-center gap-8 text-xs font-semibold text-slate-600">
+                  <button onClick={() => setCurrentPage('terms')} className="hover:text-slate-800">Terms &amp; Conditions</button>
+                  <button onClick={() => setCurrentPage('privacy')} className="hover:text-slate-800">Privacy</button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="mb-8">
+                  <h1 className="text-3xl font-bold text-slate-900">Sign in</h1>
+                </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
@@ -897,24 +1035,34 @@ const SignUpPage = () => {
               <button className="h-12 w-12 rounded-full border border-slate-200 bg-white text-lg font-bold shadow-sm">f</button>
             </div>
 
-            <div className="mt-10 border-t border-slate-200 pt-6">
-              <div className="mb-4 flex items-center gap-2">
-                <h2 className="text-2xl font-bold text-slate-900">Register</h2>
-                <Info size={16} className="text-slate-500" />
+              <div className="mt-10 border-t border-slate-200 pt-6">
+                <div className="mb-4 flex items-center gap-2">
+                  <h2 className="text-2xl font-bold text-slate-900">Register</h2>
+                  <Info size={16} className="text-slate-500" />
+                </div>
+                <div className="space-y-4">
+                  <button
+                    type="button"
+                    onClick={() => setRegisterType('preferred')}
+                    className="w-full rounded-full border-2 border-slate-800 py-3 text-sm font-bold uppercase tracking-widest text-slate-800"
+                  >
+                    Preferred Customer
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setRegisterType('business')}
+                    className="w-full rounded-full border-2 border-slate-800 py-3 text-sm font-bold uppercase tracking-widest text-slate-800"
+                  >
+                    Business Owner
+                  </button>
+                </div>
+                <div className="mt-6 flex items-center justify-center gap-8 text-xs font-semibold text-slate-600">
+                  <button onClick={() => setCurrentPage('terms')} className="hover:text-slate-800">Terms &amp; Conditions</button>
+                  <button onClick={() => setCurrentPage('privacy')} className="hover:text-slate-800">Privacy</button>
+                </div>
               </div>
-              <div className="space-y-4">
-                <button className="w-full rounded-full border-2 border-slate-800 py-3 text-sm font-bold uppercase tracking-widest text-slate-800">
-                  Preferred Customer
-                </button>
-                <button className="w-full rounded-full border-2 border-slate-800 py-3 text-sm font-bold uppercase tracking-widest text-slate-800">
-                  Business Owner
-                </button>
-              </div>
-              <div className="mt-6 flex items-center justify-center gap-8 text-xs font-semibold text-slate-600">
-                <button className="hover:text-slate-800">Terms &amp; Conditions</button>
-                <button className="hover:text-slate-800">Privacy</button>
-              </div>
-            </div>
+              </>
+            )}
 
             <AnimatePresence>
               {submitted && (
@@ -924,7 +1072,7 @@ const SignUpPage = () => {
                   exit={{ opacity: 0 }}
                   className="mt-6 p-4 bg-emerald-50 text-emerald-700 rounded-lg border border-emerald-100 text-center font-medium"
                 >
-                  Sign in request submitted.
+                  Request submitted.
                 </motion.div>
               )}
             </AnimatePresence>
@@ -1054,6 +1202,45 @@ const CertificatesPage = () => {
   );
 };
 
+const TermsPage = () => {
+  return (
+    <div className="pt-16">
+      <section className="bg-white py-14 text-slate-900 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-bold mb-4">Terms &amp; Conditions</h1>
+          <p className="text-slate-600">Last Updated: March 23, 2026</p>
+        </div>
+      </section>
+
+      <section className="py-24 bg-white">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="prose prose-slate max-w-none">
+            <h2 className="text-2xl font-bold text-slate-900 mb-6">1. Acceptance</h2>
+            <p className="text-slate-600 mb-8 leading-relaxed">
+              By using our website or services, you agree to these terms. If you do not agree, please do not use our services.
+            </p>
+
+            <h2 className="text-2xl font-bold text-slate-900 mb-6">2. Services</h2>
+            <p className="text-slate-600 mb-8 leading-relaxed">
+              We provide professional services across real estate, finance, and insurance. Availability may vary by location and eligibility.
+            </p>
+
+            <h2 className="text-2xl font-bold text-slate-900 mb-6">3. User Responsibilities</h2>
+            <p className="text-slate-600 mb-8 leading-relaxed">
+              You agree to provide accurate information and comply with applicable laws and regulations.
+            </p>
+
+            <h2 className="text-2xl font-bold text-slate-900 mb-6">4. Contact</h2>
+            <p className="text-slate-600 mb-8 leading-relaxed">
+              For questions regarding these terms, please contact us at info@nandanconsumer.com.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
 // --- Main App ---
 
 export default function App() {
@@ -1070,9 +1257,10 @@ export default function App() {
       case 'services': return <ServicesPage setCurrentPage={setCurrentPage} />;
       case 'products': return <ComingSoonPage title="Products" />;
       case 'certificates': return <CertificatesPage />;
-      case 'signup': return <SignUpPage />;
+      case 'signup': return <SignUpPage setCurrentPage={setCurrentPage} />;
       case 'contact': return <ContactPage />;
       case 'privacy': return <PrivacyPolicyPage />;
+      case 'terms': return <TermsPage />;
       default: return <HomePage setCurrentPage={setCurrentPage} />;
     }
   };
