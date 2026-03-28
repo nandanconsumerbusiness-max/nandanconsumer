@@ -1,21 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
   
-  --color-brand-50: #f7f7f7;
-  --color-brand-100: #eeeeee;
-  --color-brand-200: #e1e1e1;
-  --color-brand-300: #cfcfcf;
-  --color-brand-400: #b0b0b0;
-  --color-brand-500: #8a8a8a;
-  --color-brand-600: #6b6b6b;
-  --color-brand-700: #4f4f4f;
-  --color-brand-800: #3a3a3a;
-  --color-brand-900: #262626;
-  --color-brand-950: #111111;
+  --color-brand-50: #eef7ff;
+  --color-brand-100: #d8eeff;
+  --color-brand-200: #b6ddff;
+  --color-brand-300: #86c6ff;
+  --color-brand-400: #52a9ff;
+  --color-brand-500: #1e8bff;
+  --color-brand-600: #0b6fe0;
+  --color-brand-700: #0a56b0;
+  --color-brand-800: #0b468a;
+  --color-brand-900: #0a3a6f;
+  --color-brand-950: #072547;
+}
+
+.fade-in {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @layer base {

@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Phone, Mail, MapPin, ChevronRight, Facebook, Linkedin, Twitter, ShieldCheck, Zap, Home as HomeIcon, Eye, EyeOff, Info, UserCircle } from 'lucide-react';
+import { Menu, X, Phone, Mail, MapPin, ChevronRight, Facebook, Linkedin, Twitter, ShieldCheck, Zap, Home as HomeIcon, Eye, EyeOff, Info, UserCircle, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import logo from './assets/logo.jpeg';
+import gallery1 from './assets/Photos-3-001/IMG_20240316_162436.jpg';
+import gallery2 from './assets/Photos-3-001/IMG20170923104719.jpg';
+import gallery3 from './assets/Photos-3-001/IMG20180113131012.jpg';
+import gallery4 from './assets/Photos-3-001/Photo0018.jpg';
+import gallery5 from './assets/Photos-3-001/IMG-20170615-WA0076.jpg';
+import gallery6 from './assets/Photos-3-001/IMG20170429090941.jpg';
+import gallery7 from './assets/Photos-3-001/IMG-20170615-WA0047.jpg';
+import gallery8 from './assets/Photos-3-001/IMG-20170709-WA0044.jpg';
+import gallery9 from './assets/Photos-3-001/IMG20161002174626.jpg';
+import gallery10 from './assets/Photos-3-001/IMG20170426182440.jpg';
+import gallery11 from './assets/Photos-3-001/IMG20170911115032.jpg';
+import gallery12 from './assets/Photos-3-001/Photo0015.jpg';
 
 // --- Types ---
-export type Page = 'home' | 'about' | 'services' | 'products' | 'certificates' | 'signup' | 'contact' | 'privacy' | 'terms' | 'dashboard';
+export type Page = 'home' | 'about' | 'services' | 'products' | 'gallery' | 'certificates' | 'signup' | 'contact' | 'privacy' | 'terms' | 'dashboard';
 
 // --- Components ---
 
@@ -30,7 +42,7 @@ const Navbar = ({
     { label: 'Home', value: 'home' },
     { label: 'About Us', value: 'about' },
     { label: 'Services', value: 'services' },
-    { label: 'Products', value: 'products' },
+    { label: 'Gallery', value: 'gallery' },
     { label: 'Certificates', value: 'certificates' },
     { label: 'Contact', value: 'contact' },
   ];
@@ -67,14 +79,14 @@ const Navbar = ({
               {isLoggedIn ? (
                 <button
                   onClick={() => setCurrentPage('dashboard')}
-                  className="bg-slate-900 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-slate-800 transition-all duration-300 shadow-sm"
+                  className="bg-gradient-to-r from-[#007bff] to-[#00c6ff] text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:shadow-[0_10px_25px_rgba(0,123,255,0.25)] transition-all duration-300 shadow-sm"
                 >
                   Profile
                 </button>
               ) : (
                 <button
                   onClick={() => setCurrentPage('signup')}
-                  className="bg-slate-900 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-slate-800 transition-all duration-300 shadow-sm"
+                  className="bg-gradient-to-r from-[#007bff] to-[#00c6ff] text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:shadow-[0_10px_25px_rgba(0,123,255,0.25)] transition-all duration-300 shadow-sm"
                 >
                   Sign Up
                 </button>
@@ -318,7 +330,7 @@ const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold text-slate-900 mb-4">Our Business Areas</h2>
-              <p className="text-slate-600 max-w-2xl mx-auto">We focus on core service areas tailored to meet the evolving needs of our clients.</p>
+              <p className="text-white/90 max-w-2xl mx-auto">We focus on core service areas tailored to meet the evolving needs of our clients.</p>
             </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, idx) => (
@@ -338,6 +350,27 @@ const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => 
                 >
                   Learn More <ChevronRight size={16} className="ml-1" />
                 </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">Project Gallery</h2>
+            <p className="text-white/90 max-w-2xl mx-auto">A glimpse of our on-ground work and completed projects.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[gallery1, gallery2, gallery3, gallery4, gallery5, gallery6].map((img, idx) => (
+              <div key={idx} className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+                <img
+                  src={img}
+                  alt={`Project gallery ${idx + 1}`}
+                  className="h-64 w-full object-cover transition-transform duration-300 hover:scale-105"
+                />
               </div>
             ))}
           </div>
@@ -451,13 +484,55 @@ const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => 
   );
 };
 
+const GalleryPage = () => {
+  const images = [
+    gallery1,
+    gallery2,
+    gallery3,
+    gallery4,
+    gallery5,
+    gallery6,
+    gallery7,
+    gallery8,
+    gallery9,
+    gallery10,
+    gallery11,
+    gallery12,
+  ];
+  return (
+    <div className="pt-16">
+      <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-bold mb-4">Gallery</h1>
+          <p className="text-white/90 max-w-3xl">Explore our recent projects and on-ground work.</p>
+        </div>
+      </section>
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {images.map((img, idx) => (
+              <div key={idx} className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+                <img
+                  src={img}
+                  alt={`Gallery image ${idx + 1}`}
+                  className="h-64 w-full object-cover transition-transform duration-300 hover:scale-105"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
 const AboutPage = () => {
   return (
     <div className="pt-16">
-      <section className="bg-white py-14 text-slate-900 border-b border-slate-200">
+      <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold mb-4">About Us</h1>
-          <p className="text-slate-600 max-w-2xl">Learn more about our journey, our values, and our commitment to excellence.</p>
+          <p className="text-white/90 max-w-2xl">Learn more about our journey, our values, and our commitment to excellence.</p>
         </div>
       </section>
 
@@ -496,7 +571,7 @@ const AboutPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Our Professional Approach</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">We follow a structured methodology to ensure every project meets our rigorous quality standards.</p>
+            <p className="text-white/90 max-w-2xl mx-auto">We follow a structured methodology to ensure every project meets our rigorous quality standards.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white p-8 rounded-xl shadow-sm">
@@ -545,10 +620,10 @@ const ServicesPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void })
 
   return (
     <div className="pt-16">
-        <section className="bg-white py-14 text-slate-900 border-b border-slate-200">
+        <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-4xl font-bold mb-4">Services</h1>
-            <p className="text-slate-600 max-w-3xl">
+            <p className="text-white/90 max-w-3xl">
               We provide professional services across real estate, finance, and insurance domains. Our team focuses on clarity, compliance, and reliable delivery for every engagement.
             </p>
           </div>
@@ -558,7 +633,7 @@ const ServicesPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void })
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">What We Offer</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">
+            <p className="text-white/90 max-w-2xl mx-auto">
               Structured service delivery backed by experienced professionals and a commitment to quality.
             </p>
           </div>
@@ -692,10 +767,10 @@ const ContactPage = () => {
 
   return (
     <div className="pt-16">
-      <section className="bg-white py-14 text-slate-900 border-b border-slate-200">
+      <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
-          <p className="text-slate-600 max-w-2xl">Have a question or a project in mind? Reach out to us and we'll get back to you as soon as possible.</p>
+          <p className="text-white/90 max-w-2xl">Have a question or a project in mind? Reach out to us and we'll get back to you as soon as possible.</p>
         </div>
       </section>
 
@@ -896,20 +971,6 @@ const SignUpPage = ({
       setError('Please fill all required fields.');
       return;
     }
-    if (registerData.aboKnown === 'yes' && !registerData.aboId) {
-      setError('Please enter the Business Owner number.');
-      return;
-    }
-    if (registerData.aboKnown === 'no') {
-      if (!pinVerified) {
-        setError('Please verify your pincode to see available owners.');
-        return;
-      }
-      if (!registerData.aboId) {
-        setError('Please select an owner from the list.');
-        return;
-      }
-    }
     try {
       const res = await fetch(`${API_BASE}/api/register`, {
         method: 'POST',
@@ -1102,7 +1163,6 @@ const SignUpPage = ({
                         <label className="text-sm font-semibold text-slate-700">Enter Business Owner Number</label>
                         <input
                           type="text"
-                          required
                           value={registerData.aboId}
                           onChange={(e) => setRegisterData({ ...registerData, aboId: e.target.value })}
                           className="w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm"
@@ -1353,10 +1413,10 @@ const SignUpPage = ({
 const PrivacyPolicyPage = () => {
   return (
     <div className="pt-16">
-      <section className="bg-white py-14 text-slate-900 border-b border-slate-200">
+      <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold mb-4">Privacy Policy</h1>
-          <p className="text-slate-600">Last Updated: March 16, 2026</p>
+          <p className="text-white/90">Last Updated: March 16, 2026</p>
         </div>
       </section>
 
@@ -1403,66 +1463,97 @@ const PrivacyPolicyPage = () => {
 const CertificatesPage = () => {
   const certificates = [
     {
-      title: 'GST Registration',
-      desc: 'Official GST registration certificate for company operations.',
-      status: 'Available on request',
+      name: 'GST Registration Certificate',
+      src: '/images/GST_Registration_Certificate.png',
+      fit: 'cover',
     },
     {
-      title: 'MSME Registration',
-      desc: 'MSME registration certificate for compliance and business eligibility.',
-      status: 'Available on request',
+      name: 'Certificate of Incorporation',
+      src: '/images/Certificate_of_Incorporation.png',
+      fit: 'cover',
     },
     {
-      title: 'Company Incorporation',
-      desc: 'Certificate of incorporation confirming legal entity status.',
-      status: 'Available on request',
+      name: 'Udyam Registration Certificate',
+      src: '/images/Udyam_Registration_Certificate.png',
+      fit: 'cover',
     },
     {
-      title: 'PAN Card (Company)',
-      desc: 'Permanent Account Number (PAN) card for corporate tax identification.',
-      status: 'Available on request',
+      name: 'PAN Card',
+      src: '/images/PAN_Card.png',
+      fit: 'contain',
+      aspect: 'aspect-[4/3]',
+    },
+    {
+      name: 'Shops & Establishment Certificate',
+      src: '/images/Shops_Establishment_Certificate.png',
+      fit: 'cover',
     },
   ];
+  const [preview, setPreview] = useState<string | null>(null);
 
   return (
-    <div className="pt-16">
-      <section className="bg-white py-14 text-slate-900 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-4">Certificates</h1>
-          <p className="text-slate-600 max-w-3xl">
-            Below is a summary of our key registrations and certificates. Copies can be shared upon request.
-          </p>
+    <div className="pt-16 bg-white cert-page">
+      <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
+        <div className="max-w-6xl mx-auto px-10 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Certifications</h1>
+          <p className="text-white/90 text-lg">Official documents and registrations of our company</p>
         </div>
       </section>
 
-      <section className="py-24 bg-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {certificates.map((item, idx) => (
-              <div key={idx} className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all">
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h3>
-                <p className="text-slate-600 text-sm leading-relaxed mb-4">{item.desc}</p>
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-50 text-brand-700">
-                  {item.status}
-                </span>
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 fade-in">
+            {certificates.map((item) => (
+              <div
+                key={item.name}
+                className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lg"
+              >
+                <button
+                  type="button"
+                  onClick={() => setPreview(item.src)}
+                  className="w-full text-left"
+                >
+                  <div className="bg-[#f9fafb] p-3 h-[360px] flex items-center justify-center overflow-hidden">
+                    <img
+                      src={item.src}
+                      alt={item.name}
+                      loading="lazy"
+                      className={`h-full w-auto object-contain transition-transform duration-300 hover:scale-105 ${item.rotate ? (item.rotateClass || 'rotate-90') : ''}`}
+                    />
+                  </div>
+                </button>
+                <div className="p-5 flex items-center justify-between gap-4">
+                  <span className="font-medium text-slate-900">{item.name}</span>
+                  <a
+                    href={item.src}
+                    download
+                    className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-white shadow-sm bg-gradient-to-r from-[#007bff] to-[#00c6ff] hover:shadow-[0_10px_25px_rgba(0,123,255,0.25)] transition"
+                  >
+                    <Download size={16} />
+                    Download
+                  </a>
+                </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-12 p-8 rounded-2xl border border-slate-200 bg-slate-50/70 text-center">
-            <h4 className="text-lg font-bold text-slate-900 mb-2">Need a Certificate Copy?</h4>
-            <p className="text-slate-600 mb-6">Contact us to request official copies or verification.</p>
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
-              <div className="flex items-center text-slate-700 font-semibold">
-                <Phone size={18} className="mr-2 text-brand-600" />
-                <span>+91 63017 21221</span>
-              </div>
-              <div className="flex items-center text-slate-700 font-semibold">
-                <Mail size={18} className="mr-2 text-brand-600" />
-                <span>info@nandanconsumer.com</span>
+          {preview && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+              <div className="relative max-w-4xl w-full bg-white rounded-2xl overflow-hidden">
+                <button
+                  onClick={() => setPreview(null)}
+                  className="absolute right-4 top-4 rounded-full bg-white border border-slate-200 px-3 py-1 text-sm font-semibold"
+                >
+                  Close
+                </button>
+                <img
+                  src={preview}
+                  alt="Certificate preview"
+                  className="w-full max-h-[85vh] object-contain bg-white"
+                />
               </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
     </div>
@@ -1472,10 +1563,10 @@ const CertificatesPage = () => {
 const TermsPage = () => {
   return (
     <div className="pt-16">
-      <section className="bg-white py-14 text-slate-900 border-b border-slate-200">
+      <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold mb-4">Terms &amp; Conditions</h1>
-          <p className="text-slate-600">Last Updated: March 23, 2026</p>
+          <p className="text-white/90">Last Updated: March 23, 2026</p>
         </div>
       </section>
 
@@ -1536,11 +1627,10 @@ const DashboardPage = ({
 
   return (
     <div className="pt-16">
-      <section className="bg-white py-14 text-slate-900 border-b border-slate-200">
+      <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold mb-2">Dashboard</h1>
-          <p className="text-slate-600">
-            Welcome{user?.firstName ? `, ${user.firstName}` : ''}!
+          <p className="text-white/90">Welcome{user?.firstName ? `, ${user.firstName}` : ''}!
           </p>
         </div>
       </section>
@@ -1619,6 +1709,7 @@ export default function App() {
       case 'about': return <AboutPage />;
       case 'services': return <ServicesPage setCurrentPage={setCurrentPage} />;
       case 'products': return <ComingSoonPage title="Products" />;
+      case 'gallery': return <GalleryPage />;
       case 'certificates': return <CertificatesPage />;
       case 'signup': return <SignUpPage setCurrentPage={setCurrentPage} setIsLoggedIn={setIsLoggedIn} />;
       case 'contact': return <ContactPage />;
@@ -1649,4 +1740,5 @@ export default function App() {
     </div>
   );
 }
+
 
