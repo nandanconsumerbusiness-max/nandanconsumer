@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Phone, Mail, MapPin, ChevronRight, Facebook, Linkedin, Twitter, ShieldCheck, Zap, Home as HomeIcon, Eye, EyeOff, Info, UserCircle, Download } from 'lucide-react';
+import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, Phone, Mail, MapPin, ChevronRight, Facebook, Linkedin, Twitter, ShieldCheck, Zap, Home as HomeIcon, Eye, EyeOff, Info, UserCircle, Download, Cable, Shield, Lightbulb, Plug, Cpu, Sun, Boxes, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import logo from './assets/logo.jpeg';
 import gallery1 from './assets/Photos-3-001/IMG_20240316_162436.jpg';
@@ -17,6 +18,27 @@ import gallery12 from './assets/Photos-3-001/Photo0015.jpg';
 
 // --- Types ---
 export type Page = 'home' | 'about' | 'services' | 'products' | 'gallery' | 'certificates' | 'signup' | 'contact' | 'privacy' | 'terms' | 'dashboard';
+
+const pageToPath: Record<Page, string> = {
+  home: '/',
+  about: '/about',
+  services: '/services',
+  products: '/products',
+  gallery: '/gallery',
+  certificates: '/certificates',
+  signup: '/signup',
+  contact: '/contact',
+  privacy: '/privacy',
+  terms: '/terms',
+  dashboard: '/dashboard',
+};
+
+const pathToPage = (path: string): Page => {
+  const normalized = path.split('?')[0];
+  const entry = (Object.entries(pageToPath) as [Page, string][])
+    .find(([, p]) => p === normalized);
+  return entry ? entry[0] : 'home';
+};
 
 // --- Components ---
 
@@ -41,7 +63,7 @@ const Navbar = ({
   const navLinks: { label: string, value: Page }[] = [
     { label: 'Home', value: 'home' },
     { label: 'About Us', value: 'about' },
-    { label: 'Services', value: 'services' },
+    { label: 'Products', value: 'products' },
     { label: 'Gallery', value: 'gallery' },
     { label: 'Certificates', value: 'certificates' },
     { label: 'Contact', value: 'contact' },
@@ -64,16 +86,16 @@ const Navbar = ({
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <button
+              <Link
                 key={link.value}
-                onClick={() => setCurrentPage(link.value)}
+                to={pageToPath[link.value]}
                 className={`group relative text-sm font-semibold transition-colors duration-300 hover:text-brand-700 ${currentPage === link.value ? 'text-brand-700' : 'text-slate-600'}`}
               >
                 {link.label}
                 <span
                   className={`pointer-events-none absolute -bottom-2 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ${currentPage === link.value ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}
                 />
-              </button>
+              </Link>
             ))}
             <div className="flex items-center gap-3">
               {isLoggedIn ? (
@@ -114,16 +136,14 @@ const Navbar = ({
           >
             <div className="px-4 pt-2 pb-6 space-y-1">
               {navLinks.map((link) => (
-                <button
+                <Link
                   key={link.value}
-                  onClick={() => {
-                    setCurrentPage(link.value);
-                    setIsOpen(false);
-                  }}
+                  to={pageToPath[link.value]}
+                  onClick={() => setIsOpen(false)}
                   className={`block w-full text-left px-3 py-4 text-base font-semibold border-b border-slate-50 transition-colors ${currentPage === link.value ? 'text-brand-700 bg-brand-50/70' : 'text-slate-600 hover:text-brand-700'}`}
                 >
                   {link.label}
-                </button>
+                </Link>
               ))}
               <div className="pt-4">
                 <button 
@@ -499,6 +519,11 @@ const GalleryPage = () => {
     gallery11,
     gallery12,
   ];
+  const [preview, setPreview] = useState<string | null>(null);
+  const [zoom, setZoom] = useState(1);
+  const zoomIn = () => setZoom((z) => Math.min(3, Number((z + 0.25).toFixed(2))));
+  const zoomOut = () => setZoom((z) => Math.max(0.5, Number((z - 0.25).toFixed(2))));
+  const resetZoom = () => setZoom(1);
   return (
     <div className="pt-16">
       <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
@@ -511,15 +536,43 @@ const GalleryPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {images.map((img, idx) => (
-              <div key={idx} className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+              <button
+                key={idx}
+                type="button"
+                onClick={() => {
+                  setPreview(img);
+                  resetZoom();
+                }}
+                className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 text-left"
+              >
                 <img
                   src={img}
                   alt={`Gallery image ${idx + 1}`}
                   className="h-64 w-full object-cover transition-transform duration-300 hover:scale-105"
                 />
-              </div>
+              </button>
             ))}
           </div>
+          {preview && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+              <div className="relative max-w-5xl w-full bg-white rounded-2xl overflow-hidden">
+                <div className="absolute right-4 top-4 flex items-center gap-2 z-10">
+                  <button onClick={zoomOut} className="rounded-full bg-white border border-slate-200 px-3 py-1 text-sm font-semibold">-</button>
+                  <button onClick={resetZoom} className="rounded-full bg-white border border-slate-200 px-3 py-1 text-sm font-semibold">Reset</button>
+                  <button onClick={zoomIn} className="rounded-full bg-white border border-slate-200 px-3 py-1 text-sm font-semibold">+</button>
+                  <button onClick={() => setPreview(null)} className="rounded-full bg-white border border-slate-200 px-3 py-1 text-sm font-semibold">Close</button>
+                </div>
+                <div className="max-h-[85vh] overflow-auto bg-white flex items-center justify-center">
+                  <img
+                    src={preview}
+                    alt="Gallery preview"
+                    className="object-contain"
+                    style={{ transform: `scale(${zoom})`, transformOrigin: 'center center' }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </div>
@@ -723,6 +776,138 @@ const ServicesPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void })
                   <span>+91 63017 21221</span>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+const ProductsPage = () => {
+  const navigate = useNavigate();
+  const products = [
+    {
+      title: 'Electrical Cables & Wires',
+      desc: 'High-quality house wiring, industrial cables, and flexible cords designed for durability, safety, and long-term performance.',
+      icon: <Cable size={24} />,
+    },
+    {
+      title: 'Switchgear & Protection',
+      desc: 'Advanced protection devices including MCB, MCCB, RCCB, isolators, and surge protectors ensuring complete electrical safety.',
+      icon: <Shield size={24} />,
+    },
+    {
+      title: 'Panels & Control Systems',
+      desc: 'Custom-built LT panels, control panels, starters, and automation-ready solutions for industrial efficiency.',
+      icon: <Zap size={24} />,
+    },
+    {
+      title: 'Lighting Solutions',
+      desc: 'Energy-efficient LED lighting solutions for indoor, outdoor, commercial, and industrial environments.',
+      icon: <Lightbulb size={24} />,
+    },
+    {
+      title: 'Earthing & Lightning',
+      desc: 'Reliable earthing systems and lightning protection solutions for enhanced safety and compliance.',
+      icon: <ShieldCheck size={24} />,
+    },
+    {
+      title: 'Electrical Accessories',
+      desc: 'Complete range of switches, sockets, conduits, and wiring accessories for all installation needs.',
+      icon: <Plug size={24} />,
+    },
+    {
+      title: 'Electronics & Components',
+      desc: 'Essential components including power supplies, connectors, sensors, and adapters for modern applications.',
+      icon: <Cpu size={24} />,
+    },
+    {
+      title: 'Consumer Electronics',
+      desc: 'Home and office electronics including power backup systems and essential appliances.',
+      icon: <HomeIcon size={24} />,
+    },
+    {
+      title: 'Solar Electricals',
+      desc: 'Sustainable solar solutions including inverters, controllers, and solar distribution systems.',
+      icon: <Sun size={24} />,
+    },
+  ];
+
+  return (
+    <div className="pt-16">
+      <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-bold mb-4">Comprehensive Electrical &amp; Electronics Solutions</h1>
+          <p className="text-white/90 max-w-3xl text-lg">
+            We provide end-to-end electrical and electronic products for residential, commercial, and industrial applications.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            {[
+              'Industrial Grade Products',
+              'Certified & Reliable',
+              'Bulk Supply Available',
+              'Trusted by Contractors & Businesses',
+            ].map((badge) => (
+              <span key={badge} className="bg-white/15 text-white text-sm px-4 py-2 rounded-full">
+                {badge}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">Electrical & Electronics Product Range</h2>
+            <p className="text-slate-600 max-w-2xl mx-auto">
+              We supply a wide range of electrical and electronics products for residential, commercial, and industrial needs.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {products.map((item, idx) => (
+              <div
+                key={idx}
+                className="group rounded-2xl border border-slate-200 bg-gradient-to-br from-white via-[#f8fbff] to-[#eef7ff] p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.05] hover:shadow-xl hover:border-[#60a5fa]"
+              >
+                <div className="w-12 h-12 rounded-xl bg-[#eef7ff] text-[#0b6fe0] flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110">
+                  {item.icon}
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">{item.title}</h3>
+                <p className="text-sm text-slate-600">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div className="rounded-2xl border border-slate-200 p-6 bg-white shadow-sm">
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">Why Choose Us</h3>
+              <ul className="text-slate-600 space-y-3">
+                {[
+                  'Wide Product Range',
+                  'Competitive Pricing',
+                  'Quality Assured Products',
+                  'Timely Delivery',
+                  'Expert Support',
+                ].map((point) => (
+                  <li key={point} className="flex items-center gap-2">
+                    <CheckCircle2 size={18} className="text-brand-600" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-slate-200 p-8 bg-gradient-to-br from-[#0ea5e9] to-[#7c3aed] text-white shadow-sm">
+              <h3 className="text-2xl font-bold mb-3">Looking for Reliable Electrical Products?</h3>
+              <p className="text-white/90 mb-6">We support bulk orders and custom requirements for contractors and businesses.</p>
+              <button
+                onClick={() => navigate('/contact')}
+                className="inline-flex items-center gap-2 rounded-full bg-white text-[#0b6fe0] px-6 py-3 text-sm font-semibold shadow-sm hover:shadow-[0_10px_25px_rgba(255,255,255,0.25)] transition"
+              >
+                <Boxes size={18} />
+                Contact Us for Bulk Orders
+              </button>
             </div>
           </div>
         </div>
@@ -1490,6 +1675,10 @@ const CertificatesPage = () => {
     },
   ];
   const [preview, setPreview] = useState<string | null>(null);
+  const [zoom, setZoom] = useState(1);
+  const zoomIn = () => setZoom((z) => Math.min(3, Number((z + 0.25).toFixed(2))));
+  const zoomOut = () => setZoom((z) => Math.max(0.5, Number((z - 0.25).toFixed(2))));
+  const resetZoom = () => setZoom(1);
 
   return (
     <div className="pt-16 bg-white cert-page">
@@ -1510,7 +1699,10 @@ const CertificatesPage = () => {
               >
                 <button
                   type="button"
-                  onClick={() => setPreview(item.src)}
+                  onClick={() => {
+                    setPreview(item.src);
+                    resetZoom();
+                  }}
                   className="w-full text-left"
                 >
                   <div className="bg-[#f9fafb] p-3 h-[360px] flex items-center justify-center overflow-hidden">
@@ -1540,17 +1732,25 @@ const CertificatesPage = () => {
           {preview && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
               <div className="relative max-w-4xl w-full bg-white rounded-2xl overflow-hidden">
-                <button
-                  onClick={() => setPreview(null)}
-                  className="absolute right-4 top-4 rounded-full bg-white border border-slate-200 px-3 py-1 text-sm font-semibold"
-                >
-                  Close
-                </button>
-                <img
-                  src={preview}
-                  alt="Certificate preview"
-                  className="w-full max-h-[85vh] object-contain bg-white"
-                />
+                <div className="absolute right-4 top-4 flex items-center gap-2 z-10">
+                  <button onClick={zoomOut} className="rounded-full bg-white border border-slate-200 px-3 py-1 text-sm font-semibold">-</button>
+                  <button onClick={resetZoom} className="rounded-full bg-white border border-slate-200 px-3 py-1 text-sm font-semibold">Reset</button>
+                  <button onClick={zoomIn} className="rounded-full bg-white border border-slate-200 px-3 py-1 text-sm font-semibold">+</button>
+                  <button
+                    onClick={() => setPreview(null)}
+                    className="rounded-full bg-white border border-slate-200 px-3 py-1 text-sm font-semibold"
+                  >
+                    Close
+                  </button>
+                </div>
+                <div className="max-h-[85vh] overflow-auto bg-white flex items-center justify-center">
+                  <img
+                    src={preview}
+                    alt="Certificate preview"
+                    className="object-contain"
+                    style={{ transform: `scale(${zoom})`, transformOrigin: 'center center' }}
+                  />
+                </div>
               </div>
             </div>
           )}
@@ -1687,57 +1887,69 @@ const DashboardPage = ({
 
 // --- Main App ---
 
-export default function App() {
-  const [currentPage, setCurrentPage] = useState<Page>('home');
+function AppShell() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const currentPage = pathToPage(location.pathname);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [currentPage]);
+  }, [location.pathname]);
 
   useEffect(() => {
     const raw = localStorage.getItem('nandan_auth');
-    if (raw) {
-      setIsLoggedIn(true);
-      setCurrentPage('dashboard');
-    }
-  }, []);
+    const loggedIn = !!raw;
+    setIsLoggedIn(loggedIn);
 
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home': return <HomePage setCurrentPage={setCurrentPage} />;
-      case 'about': return <AboutPage />;
-      case 'services': return <ServicesPage setCurrentPage={setCurrentPage} />;
-      case 'products': return <ComingSoonPage title="Products" />;
-      case 'gallery': return <GalleryPage />;
-      case 'certificates': return <CertificatesPage />;
-      case 'signup': return <SignUpPage setCurrentPage={setCurrentPage} setIsLoggedIn={setIsLoggedIn} />;
-      case 'contact': return <ContactPage />;
-      case 'privacy': return <PrivacyPolicyPage />;
-      case 'terms': return <TermsPage />;
-      case 'dashboard': return <DashboardPage setCurrentPage={setCurrentPage} setIsLoggedIn={setIsLoggedIn} />;
-      default: return <HomePage setCurrentPage={setCurrentPage} />;
+    if (loggedIn && location.pathname === pageToPath.signup) {
+      navigate(pageToPath.dashboard, { replace: true });
     }
-  };
+    if (!loggedIn && location.pathname === pageToPath.dashboard) {
+      navigate(pageToPath.signup, { replace: true });
+    }
+  }, [location.pathname, navigate]);
+
+  const go = (p: Page) => navigate(pageToPath[p]);
 
   return (
     <div className="min-h-screen flex flex-col font-sans">
-      <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} isLoggedIn={isLoggedIn} />
+      <Navbar currentPage={currentPage} setCurrentPage={go} isLoggedIn={isLoggedIn} />
       <main className="flex-grow">
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentPage}
+            key={location.pathname}
             initial={{ opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -10 }}
             transition={{ duration: 0.3 }}
           >
-            {renderPage()}
+            <Routes>
+              <Route path="/" element={<HomePage setCurrentPage={go} />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/services" element={<ServicesPage setCurrentPage={go} />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/gallery" element={<GalleryPage />} />
+              <Route path="/certificates" element={<CertificatesPage />} />
+              <Route path="/signup" element={<SignUpPage setCurrentPage={go} setIsLoggedIn={setIsLoggedIn} />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/privacy" element={<PrivacyPolicyPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/dashboard" element={<DashboardPage setCurrentPage={go} setIsLoggedIn={setIsLoggedIn} />} />
+            </Routes>
           </motion.div>
         </AnimatePresence>
       </main>
-      <Footer setCurrentPage={setCurrentPage} />
+      <Footer setCurrentPage={go} />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppShell />
+    </BrowserRouter>
   );
 }
 
