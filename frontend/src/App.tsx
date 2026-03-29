@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { Menu, X, Phone, Mail, MapPin, ChevronRight, Facebook, Linkedin, Twitter, ShieldCheck, Zap, Home as HomeIcon, Eye, EyeOff, Info, UserCircle, Download, Cable, Shield, Lightbulb, Plug, Cpu, Sun, Boxes, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import logo from './assets/logo.jpeg';
@@ -63,7 +63,6 @@ const Navbar = ({
   const navLinks: { label: string, value: Page }[] = [
     { label: 'Home', value: 'home' },
     { label: 'About Us', value: 'about' },
-    { label: 'Products', value: 'products' },
     { label: 'Gallery', value: 'gallery' },
     { label: 'Certificates', value: 'certificates' },
     { label: 'Contact', value: 'contact' },
@@ -97,6 +96,35 @@ const Navbar = ({
                 />
               </Link>
             ))}
+            <div className="relative group">
+              <Link
+                to="/products"
+                className={`group relative text-sm font-semibold transition-colors duration-300 hover:text-brand-700 ${currentPage === 'products' ? 'text-brand-700' : 'text-slate-600'}`}
+              >
+                Products
+                <span
+                  className={`pointer-events-none absolute -bottom-2 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ${currentPage === 'products' ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}
+                />
+              </Link>
+              <div className="absolute left-0 top-full pt-3 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
+                <div className="w-56 rounded-xl border border-slate-200 bg-white shadow-xl p-3">
+                  {[
+                    { label: 'Electronics', href: '/products#electronics' },
+                    { label: 'Insurance Services', href: '/products#insurance' },
+                    { label: 'Real Estate Services', href: '/products#realestate' },
+                    { label: 'Finance Services', href: '/products#finance' },
+                  ].map((item) => (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      className="block rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
             <div className="flex items-center gap-3">
               {isLoggedIn ? (
                 <button
@@ -145,6 +173,32 @@ const Navbar = ({
                   {link.label}
                 </Link>
               ))}
+              <div className="border-b border-slate-50">
+                <Link
+                  to="/products"
+                  onClick={() => setIsOpen(false)}
+                  className={`block w-full text-left px-3 py-4 text-base font-semibold transition-colors ${currentPage === 'products' ? 'text-brand-700 bg-brand-50/70' : 'text-slate-600 hover:text-brand-700'}`}
+                >
+                  Products
+                </Link>
+                <div className="pb-3">
+                  {[
+                    { label: 'Electronics', href: '/products#electronics' },
+                    { label: 'Insurance Services', href: '/products#insurance' },
+                    { label: 'Real Estate Services', href: '/products#realestate' },
+                    { label: 'Finance Services', href: '/products#finance' },
+                  ].map((item) => (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className="block px-6 py-2 text-sm font-medium text-slate-600 hover:text-brand-700"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
               <div className="pt-4">
                 <button 
                   onClick={() => {
@@ -197,7 +251,7 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
             <ul className="space-y-4 text-sm">
               <li><button onClick={() => setCurrentPage('home')} className="hover:text-slate-900 transition-colors">Home</button></li>
               <li><button onClick={() => setCurrentPage('about')} className="hover:text-slate-900 transition-colors">About Us</button></li>
-              <li><button onClick={() => setCurrentPage('services')} className="hover:text-slate-900 transition-colors">Services</button></li>
+              <li><Link to="/products#electronics" className="hover:text-slate-900 transition-colors">Electronics</Link></li>
               <li><button onClick={() => setCurrentPage('products')} className="hover:text-slate-900 transition-colors">Products</button></li>
               <li><button onClick={() => setCurrentPage('certificates')} className="hover:text-slate-900 transition-colors">Certificates</button></li>
               <li><button onClick={() => setCurrentPage('contact')} className="hover:text-slate-900 transition-colors">Contact</button></li>
@@ -356,7 +410,7 @@ const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => 
             {services.map((service, idx) => (
               <div
                 key={idx}
-                onClick={() => setCurrentPage('services')}
+                onClick={() => setCurrentPage('products')}
                 className="bg-white p-8 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all group cursor-pointer"
               >
                 <div className="w-14 h-14 bg-brand-50 rounded-lg flex items-center justify-center text-brand-600 mb-6 group-hover:bg-brand-600 group-hover:text-white transition-colors">
@@ -365,7 +419,7 @@ const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => 
                 <h3 className="text-xl font-bold text-slate-900 mb-3">{service.title}</h3>
                 <p className="text-slate-600 text-sm leading-relaxed mb-6">{service.desc}</p>
                 <button 
-                  onClick={() => setCurrentPage('services')}
+                  onClick={() => setCurrentPage('products')}
                   className="text-brand-600 font-semibold text-sm flex items-center hover:underline"
                 >
                   Learn More <ChevronRight size={16} className="ml-1" />
@@ -857,7 +911,7 @@ const ProductsPage = () => {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
+      <section id="electronics" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Electrical & Electronics Product Range</h2>
@@ -878,6 +932,36 @@ const ProductsPage = () => {
                 <p className="text-sm text-slate-600">{item.desc}</p>
               </div>
             ))}
+          </div>
+
+
+
+          <div className="mt-16">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-slate-900 mb-4">Service Solutions</h2>
+              <p className="text-slate-600 max-w-2xl mx-auto">
+                Professional real estate, finance, and insurance services delivered with clarity, compliance, and reliable execution.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {serviceList.map((service) => (
+                <div key={service.id} id={service.id} className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all">
+                  <div className="w-14 h-14 bg-brand-50 rounded-lg flex items-center justify-center text-brand-600 mb-6">
+                    {service.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-3">{service.title}</h3>
+                  <p className="text-slate-600 text-sm leading-relaxed mb-6">{service.desc}</p>
+                  <ul className="text-sm text-slate-600 space-y-2">
+                    {service.points.map((point) => (
+                      <li key={point} className="flex items-start">
+                        <span className="mt-1.5 mr-2 h-1.5 w-1.5 rounded-full bg-brand-500" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
@@ -1862,7 +1946,7 @@ const DashboardPage = ({
             <div className="grid grid-cols-2 gap-3 text-sm">
               <button onClick={() => setCurrentPage('home')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Home</button>
               <button onClick={() => setCurrentPage('about')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">About</button>
-              <button onClick={() => setCurrentPage('services')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Services</button>
+              <button onClick={() => setCurrentPage('products')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Electronics</button>
               <button onClick={() => setCurrentPage('products')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Products</button>
               <button onClick={() => setCurrentPage('certificates')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Certificates</button>
               <button onClick={() => setCurrentPage('contact')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Contact</button>
@@ -1927,7 +2011,7 @@ function AppShell() {
             <Routes>
               <Route path="/" element={<HomePage setCurrentPage={go} />} />
               <Route path="/about" element={<AboutPage />} />
-              <Route path="/services" element={<ServicesPage setCurrentPage={go} />} />
+              <Route path="/services" element={<Navigate to="/products" replace />} />
               <Route path="/products" element={<ProductsPage />} />
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/certificates" element={<CertificatesPage />} />
