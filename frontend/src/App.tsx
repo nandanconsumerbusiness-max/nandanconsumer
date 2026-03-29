@@ -64,6 +64,7 @@ const Navbar = ({
   const navLinks: { label: string, value: Page }[] = [
     { label: 'Home', value: 'home' },
     { label: 'About Us', value: 'about' },
+    { label: 'Products', value: 'products' },
     { label: 'Gallery', value: 'gallery' },
     { label: 'Certificates', value: 'certificates' },
     { label: 'Contact', value: 'contact' },
@@ -98,46 +99,49 @@ const Navbar = ({
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <Link
-                key={link.value}
-                to={pageToPath[link.value]}
-                className={`group relative text-sm font-semibold transition-colors duration-300 hover:text-brand-700 ${currentPage === link.value ? 'text-brand-700' : 'text-slate-600'}`}
-              >
-                {link.label}
-                <span
-                  className={`pointer-events-none absolute -bottom-2 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ${currentPage === link.value ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}
-                />
-              </Link>
-            ))}
-            <div className="relative group">
-              <Link
-                to="/products"
-                className={`group relative text-sm font-semibold transition-colors duration-300 hover:text-brand-700 ${currentPage === 'products' ? 'text-brand-700' : 'text-slate-600'}`}
-              >
-                Products
-                <span
-                  className={`pointer-events-none absolute -bottom-2 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ${currentPage === 'products' ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}
-                />
-              </Link>
-              <div className="absolute left-0 top-full pt-3 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-                <div className="w-56 rounded-xl border border-slate-200 bg-white shadow-xl p-3">
-                  {[
-                    { label: 'Electronics', anchor: 'electronics' },
-                    { label: 'Insurance Services', anchor: 'insurance' },
-                    { label: 'Real Estate Services', anchor: 'realestate' },
-                    { label: 'Finance Services', anchor: 'finance' },
-                  ].map((item) => (
-                    <button
-                      key={item.anchor}
-                      onClick={() => handleProductAnchor(item.anchor)}
-                      className="block w-full text-left rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition-colors"
-                    >
-                      {item.label}
-                    </button>
-                  ))}
+              link.value === 'products' ? (
+                <div key={link.value} className="relative group">
+                  <Link
+                    to="/products"
+                    className={`group relative text-sm font-semibold transition-colors duration-300 hover:text-brand-700 ${currentPage === 'products' ? 'text-brand-700' : 'text-slate-600'}`}
+                  >
+                    Products
+                    <span
+                      className={`pointer-events-none absolute -bottom-2 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ${currentPage === 'products' ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}
+                    />
+                  </Link>
+                  <div className="absolute left-0 top-full pt-3 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
+                    <div className="w-56 rounded-xl border border-slate-200 bg-white shadow-xl p-3">
+                      {[
+                        { label: 'Electronics', anchor: 'electronics' },
+                        { label: 'Insurance Services', anchor: 'insurance' },
+                        { label: 'Real Estate Services', anchor: 'realestate' },
+                        { label: 'Finance Services', anchor: 'finance' },
+                      ].map((item) => (
+                        <button
+                          key={item.anchor}
+                          onClick={() => handleProductAnchor(item.anchor)}
+                          className="block w-full text-left rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition-colors"
+                        >
+                          {item.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              ) : (
+                <Link
+                  key={link.value}
+                  to={pageToPath[link.value]}
+                  className={`group relative text-sm font-semibold transition-colors duration-300 hover:text-brand-700 ${currentPage === link.value ? 'text-brand-700' : 'text-slate-600'}`}
+                >
+                  {link.label}
+                  <span
+                    className={`pointer-events-none absolute -bottom-2 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ${currentPage === link.value ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}
+                  />
+                </Link>
+              )
+            ))}
             <div className="flex items-center gap-3">
               {isLoggedIn ? (
                 <button
