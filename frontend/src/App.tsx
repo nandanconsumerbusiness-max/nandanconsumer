@@ -887,6 +887,29 @@ const ProductsPage = () => {
       icon: <Sun size={24} />,
     },
   ];
+  const serviceList = [
+    {
+      id: 'realestate',
+      title: 'Real Estate Services',
+      icon: <HomeIcon size={24} />,
+      desc: 'End-to-end real estate support for residential, commercial, and industrial needs with a focus on transparent processes.',
+      points: ['Property advisory and sourcing', 'Documentation support', 'Site visits and valuation guidance'],
+    },
+    {
+      id: 'finance',
+      title: 'Finance Services',
+      icon: <ShieldCheck size={24} />,
+      desc: 'Project and asset-focused financial guidance to help clients structure funding with clarity and confidence.',
+      points: ['Requirement assessment', 'Documentation assistance', 'End-to-end coordination'],
+    },
+    {
+      id: 'insurance',
+      title: 'Insurance Services',
+      icon: <Shield size={24} />,
+      desc: 'Insurance consulting and policy support tailored to client needs across assets and operations.',
+      points: ['Coverage advisory', 'Claim support guidance', 'Policy renewal support'],
+    },
+  ];
 
   return (
     <div className="pt-16">
