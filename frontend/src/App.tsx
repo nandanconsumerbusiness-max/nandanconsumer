@@ -945,8 +945,12 @@ const ProductsPage = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {serviceList.map((service) => (
-                <div key={service.id} id={service.id} className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all">
-                  <div className="w-14 h-14 bg-brand-50 rounded-lg flex items-center justify-center text-brand-600 mb-6">
+                <div
+                  key={service.id}
+                  id={service.id}
+                  className="group bg-gradient-to-br from-white via-[#f8fbff] to-[#eef7ff] p-8 rounded-2xl border border-slate-200 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.03] hover:shadow-xl hover:border-[#60a5fa]"
+                >
+                  <div className="w-14 h-14 bg-[#eef7ff] rounded-xl flex items-center justify-center text-brand-600 mb-6 transition-transform duration-300 group-hover:scale-110">
                     {service.icon}
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-3">{service.title}</h3>
