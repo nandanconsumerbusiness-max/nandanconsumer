@@ -51,6 +51,7 @@ const Navbar = ({
   setCurrentPage: (p: Page) => void;
   isLoggedIn: boolean;
 }) => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -67,6 +68,18 @@ const Navbar = ({
     { label: 'Certificates', value: 'certificates' },
     { label: 'Contact', value: 'contact' },
   ];
+
+  const handleProductAnchor = (anchor: string, closeMenu?: () => void) => {
+    setCurrentPage('products');
+    navigate(`/products#${anchor}`);
+    if (closeMenu) closeMenu();
+    setTimeout(() => {
+      const target = document.getElementById(anchor);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 0);
+  };
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white border-b border-slate-200 py-3' : 'bg-white border-b border-slate-100 py-4'}`}>
@@ -109,18 +122,18 @@ const Navbar = ({
               <div className="absolute left-0 top-full pt-3 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
                 <div className="w-56 rounded-xl border border-slate-200 bg-white shadow-xl p-3">
                   {[
-                    { label: 'Electronics', href: '/products#electronics' },
-                    { label: 'Insurance Services', href: '/products#insurance' },
-                    { label: 'Real Estate Services', href: '/products#realestate' },
-                    { label: 'Finance Services', href: '/products#finance' },
+                    { label: 'Electronics', anchor: 'electronics' },
+                    { label: 'Insurance Services', anchor: 'insurance' },
+                    { label: 'Real Estate Services', anchor: 'realestate' },
+                    { label: 'Finance Services', anchor: 'finance' },
                   ].map((item) => (
-                    <Link
-                      key={item.href}
-                      to={item.href}
-                      className="block rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition-colors"
+                    <button
+                      key={item.anchor}
+                      onClick={() => handleProductAnchor(item.anchor)}
+                      className="block w-full text-left rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition-colors"
                     >
                       {item.label}
-                    </Link>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -183,19 +196,18 @@ const Navbar = ({
                 </Link>
                 <div className="pb-3">
                   {[
-                    { label: 'Electronics', href: '/products#electronics' },
-                    { label: 'Insurance Services', href: '/products#insurance' },
-                    { label: 'Real Estate Services', href: '/products#realestate' },
-                    { label: 'Finance Services', href: '/products#finance' },
+                    { label: 'Electronics', anchor: 'electronics' },
+                    { label: 'Insurance Services', anchor: 'insurance' },
+                    { label: 'Real Estate Services', anchor: 'realestate' },
+                    { label: 'Finance Services', anchor: 'finance' },
                   ].map((item) => (
-                    <Link
-                      key={item.href}
-                      to={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className="block px-6 py-2 text-sm font-medium text-slate-600 hover:text-brand-700"
+                    <button
+                      key={item.anchor}
+                      onClick={() => handleProductAnchor(item.anchor, () => setIsOpen(false))}
+                      className="block w-full text-left px-6 py-2 text-sm font-medium text-slate-600 hover:text-brand-700"
                     >
                       {item.label}
-                    </Link>
+                    </button>
                   ))}
                 </div>
               </div>
