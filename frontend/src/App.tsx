@@ -178,7 +178,7 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
               <span className="text-slate-900 font-bold text-lg uppercase tracking-wider">Nandan Consumer</span>
             </div>
             <p className="text-slate-600 text-sm leading-relaxed mb-6">
-              A registered Indian company dedicated to providing high-quality product solutions across real estate, finance, and insurance sectors.
+              A registered Indian company dedicated to providing high-quality product products across real estate, finance, and insurance sectors.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition-colors">
@@ -248,9 +248,9 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
 
 const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
   const productSolutions = [
-    { title: 'Real Estate Solutions', icon: <HomeIcon size={24} />, desc: 'Property advisory and support for residential and commercial needs.' },
-    { title: 'Finance Solutions', icon: <ShieldCheck size={24} />, desc: 'Structured financial guidance with end-to-end coordination.' },
-    { title: 'Insurance Solutions', icon: <ShieldCheck size={24} />, desc: 'Coverage advisory and policy support tailored to client needs.' },
+    { title: 'Real Estate Products', icon: <HomeIcon size={24} />, desc: 'Property advisory and support for residential and commercial needs.' },
+    { title: 'Finance Products', icon: <ShieldCheck size={24} />, desc: 'Structured financial guidance with end-to-end coordination.' },
+    { title: 'Insurance Products', icon: <ShieldCheck size={24} />, desc: 'Coverage advisory and policy support tailored to client needs.' },
   ];
 
   return (
@@ -280,7 +280,7 @@ const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => 
               transition={{ delay: 0.2 }}
               className="text-lg text-slate-600 mb-10 max-w-2xl leading-relaxed"
             >
-              Nandan Consumer Equipments Private Limited provides product solutions across Real Estate, Finance, and Insurance sectors with a focus on reliability and transparency.
+              Nandan Consumer Equipments Private Limited provides product products across Real Estate, Finance, and Insurance sectors with a focus on reliability and transparency.
             </motion.p>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -321,10 +321,10 @@ const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => 
             <div>
               <h2 className="text-3xl font-bold text-slate-900 mb-6">A Legacy of Trust and Professionalism</h2>
                 <p className="text-slate-600 mb-6 leading-relaxed">
-                  Nandan Consumer Equipments Private Limited is a registered Indian company based in Hyderabad. We focus on delivering trusted real estate, finance, and insurance solutions with a professional, client-first approach.
+                  Nandan Consumer Equipments Private Limited is a registered Indian company based in Hyderabad. We focus on delivering trusted real estate, finance, and insurance products with a professional, client-first approach.
                 </p>
               <p className="text-slate-600 mb-8 leading-relaxed">
-                Our commitment to quality and customer satisfaction has made us a preferred partner for real estate, finance, and insurance solutions across the region.
+                Our commitment to quality and customer satisfaction has made us a preferred partner for real estate, finance, and insurance products across the region.
               </p>
               <div className="grid grid-cols-2 gap-6">
                 <div className="flex items-center space-x-3">
@@ -419,7 +419,7 @@ const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => 
                         <ShieldCheck size={20} className="text-slate-700" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-lg mb-1">Specialized Solutions</h4>
+                        <h4 className="font-bold text-lg mb-1">Specialized Products</h4>
                         <p className="text-slate-600 text-sm">Our team consists of experienced professionals dedicated to delivering excellence in every project.</p>
                       </div>
                     </div>
@@ -429,7 +429,7 @@ const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => 
                       </div>
                       <div>
                         <h4 className="font-bold text-lg mb-1">Quality Workmanship</h4>
-                        <p className="text-slate-600 text-sm">We use premium materials and advanced techniques to ensure the longevity and performance of our solutions.</p>
+                        <p className="text-slate-600 text-sm">We use premium materials and advanced techniques to ensure the longevity and performance of our products.</p>
                       </div>
                     </div>
                   </div>
@@ -596,10 +596,10 @@ const AboutPage = () => {
               <h2 className="text-3xl font-bold text-slate-900 mb-8">Company Introduction</h2>
               <div className="space-y-6 text-slate-600 leading-relaxed">
                 <p>
-                  NANDAN CONSUMER EQUIPMENTS PRIVATE LIMITED is a registered corporate entity based in Hyderabad, India. Founded with a vision to provide integrated solutions across multiple industrial and consumer sectors, we have grown into a trusted name for quality and reliability.
+                  NANDAN CONSUMER EQUIPMENTS PRIVATE LIMITED is a registered corporate entity based in Hyderabad, India. Founded with a vision to provide integrated products across multiple industrial and consumer sectors, we have grown into a trusted name for quality and reliability.
                 </p>
                 <p>
-                  Our expertise spans Real Estate Solutions, Finance Solutions, and Insurance Solutions. This focused portfolio allows us to offer comprehensive solutions with a single point of contact and clear accountability.
+                  Our expertise spans Real Estate Products, Finance Products, and Insurance Products. This focused portfolio allows us to offer comprehensive products with a single point of contact and clear accountability.
                 </p>
                 <p>
                   We operate with a professional approach, leveraging best practices to deliver products on time with transparent communication.
@@ -609,11 +609,11 @@ const AboutPage = () => {
             <div className="space-y-8">
               <div className="bg-white/90 p-8 rounded-2xl border border-slate-100">
                 <h3 className="text-xl font-bold text-brand-700 mb-4">Our Vision</h3>
-                <p className="text-slate-600">To be a leading product solutions company in India, recognized for trust, transparency, and excellence in real estate, finance, and insurance solutions.</p>
+                <p className="text-slate-600">To be a leading product products company in India, recognized for trust, transparency, and excellence in real estate, finance, and insurance products.</p>
               </div>
               <div className="bg-white/90 p-8 rounded-2xl border border-slate-100">
                 <h3 className="text-xl font-bold text-brand-700 mb-4">Our Mission</h3>
-                <p className="text-slate-600">To empower our clients through reliable real estate, finance, and insurance solutions while maintaining the highest standards of professionalism and transparency.</p>
+                <p className="text-slate-600">To empower our clients through reliable real estate, finance, and insurance products while maintaining the highest standards of professionalism and transparency.</p>
               </div>
             </div>
           </div>
@@ -652,19 +652,19 @@ const AboutPage = () => {
 const ServicesPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
   const serviceList = [
     {
-      title: 'Real Estate Solutions',
+      title: 'Real Estate Products',
       icon: <HomeIcon size={24} />,
       desc: 'End-to-end real estate support for residential, commercial, and industrial needs with a focus on transparent processes.',
       points: ['Property advisory and sourcing', 'Documentation support', 'Site visits and valuation guidance'],
     },
     {
-      title: 'Finance Solutions',
+      title: 'Finance Products',
       icon: <ShieldCheck size={24} />,
       desc: 'Project and asset-focused financial guidance to help clients structure funding with clarity and confidence.',
       points: ['Requirement assessment', 'Documentation assistance', 'End-to-end coordination'],
     },
     {
-      title: 'Insurance Solutions',
+      title: 'Insurance Products',
       icon: <ShieldCheck size={24} />,
       desc: 'Insurance consulting and policy support tailored to client needs across assets and operations.',
       points: ['Coverage advisory', 'Claim support guidance', 'Policy renewal support'],
@@ -677,7 +677,7 @@ const ServicesPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void })
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-4xl font-bold mb-4">Products</h1>
             <p className="text-white/90 max-w-3xl">
-              We provide product solutions across real estate, finance, and insurance domains. Our team focuses on clarity, compliance, and reliable delivery for every engagement.
+              We provide product products across real estate, finance, and insurance domains. Our team focuses on clarity, compliance, and reliable delivery for every engagement.
             </p>
           </div>
         </section>
@@ -799,17 +799,17 @@ const ProductsPage = () => {
     },
     {
       title: 'Panels & Control Systems',
-      desc: 'Custom-built LT panels, control panels, starters, and automation-ready solutions for industrial efficiency.',
+      desc: 'Custom-built LT panels, control panels, starters, and automation-ready products for industrial efficiency.',
       icon: <Zap size={24} />,
     },
     {
       title: 'Lighting Solutions',
-      desc: 'Energy-efficient LED lighting solutions for indoor, outdoor, commercial, and industrial environments.',
+      desc: 'Energy-efficient LED lighting products for indoor, outdoor, commercial, and industrial environments.',
       icon: <Lightbulb size={24} />,
     },
     {
       title: 'Earthing & Lightning',
-      desc: 'Reliable earthing systems and lightning protection solutions for enhanced safety and compliance.',
+      desc: 'Reliable earthing systems and lightning protection products for enhanced safety and compliance.',
       icon: <ShieldCheck size={24} />,
     },
     {
@@ -829,7 +829,7 @@ const ProductsPage = () => {
     },
     {
       title: 'Solar Electricals',
-      desc: 'Sustainable solar solutions including inverters, controllers, and solar distribution systems.',
+      desc: 'Sustainable solar products including inverters, controllers, and solar distribution systems.',
       icon: <Sun size={24} />,
     },
   ];
@@ -929,7 +929,7 @@ const ComingSoonPage = ({ title }: { title: string }) => {
         <div className="w-24 h-1 bg-brand-600 mx-auto mb-8"></div>
         <p className="text-xl text-slate-600 mb-8 font-medium">Under Development / Coming Soon</p>
         <p className="text-slate-500 leading-relaxed">
-          We are currently working on a detailed catalog of our {title.toLowerCase()}. Our team is curating the best solutions to showcase our expertise and offerings. Please check back soon or contact us directly for immediate inquiries.
+          We are currently working on a detailed catalog of our {title.toLowerCase()}. Our team is curating the best products to showcase our expertise and offerings. Please check back soon or contact us directly for immediate inquiries.
         </p>
         <div className="mt-12 p-6 bg-white rounded-xl border border-slate-200 shadow-sm inline-block">
           <p className="text-sm font-semibold text-slate-700">For immediate assistance, call us at:</p>
@@ -1782,7 +1782,7 @@ const TermsPage = () => {
 
             <h2 className="text-2xl font-bold text-slate-900 mb-6">2. Products</h2>
             <p className="text-slate-600 mb-8 leading-relaxed">
-              We provide product solutions across real estate, finance, and insurance. Availability may vary by location and eligibility.
+              We provide product products across real estate, finance, and insurance. Availability may vary by location and eligibility.
             </p>
 
             <h2 className="text-2xl font-bold text-slate-900 mb-6">3. User Responsibilities</h2>
