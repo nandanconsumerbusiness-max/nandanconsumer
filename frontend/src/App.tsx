@@ -73,9 +73,9 @@ const Navbar = ({
   const productMenu = [
     { label: 'Electrical Products', href: '/products/electrical' },
     { label: 'Electronics Products', href: '/products/electronics' },
-    { label: 'Insurance Products', href: '/products/insurance' },
-    { label: 'Real Estate Products', href: '/products/real-estate' },
-    { label: 'Finance Products', href: '/products/finance' },
+    { label: 'Insurance', href: '/products/insurance' },
+    { label: 'Real Estate', href: '/products/real-estate' },
+    { label: 'Finance', href: '/products/finance' },
   ];
 
 
@@ -725,19 +725,19 @@ const ProductsPage = () => {
       href: '/products/electronics',
     },
     {
-      title: 'Insurance Products',
+      title: 'Insurance',
       desc: 'Policy-ready product packs with advisory support for asset and operational coverage.',
       icon: <Shield size={24} />,
       href: '/products/insurance',
     },
     {
-      title: 'Real Estate Products',
+      title: 'Real Estate',
       desc: 'Property-focused product support and documentation assistance for residential and commercial needs.',
       icon: <HomeIcon size={24} />,
       href: '/products/real-estate',
     },
     {
-      title: 'Finance Products',
+      title: 'Finance',
       desc: 'Structured finance-ready products, documentation support, and coordination for business requirements.',
       icon: <ShieldCheck size={24} />,
       href: '/products/finance',
@@ -1925,9 +1925,9 @@ function AppShell() {
               <Route path="/products" element={<ProductsPage />} />
               <Route path="/products/electrical" element={<CategoryPage title="Electrical Products" subtitle="Cables, switchgear, panels, lighting, earthing, and accessories for all installation needs." items={electricalItems} />} />
               <Route path="/products/electronics" element={<CategoryPage title="Electronics Products" subtitle="Components, adapters, sensors, power supplies, and consumer electronics." items={electronicsItems} />} />
-              <Route path="/products/insurance" element={<CategoryPage title="Insurance Products" subtitle="Policy-ready products and support packs aligned with asset and operational coverage." items={insuranceItems} />} />
-              <Route path="/products/real-estate" element={<CategoryPage title="Real Estate Products" subtitle="Property-focused products for documentation, valuation, and compliance support." items={realEstateItems} />} />
-              <Route path="/products/finance" element={<CategoryPage title="Finance Products" subtitle="Finance-ready products with documentation and coordination support." items={financeItems} />} />
+              <Route path="/products/insurance" element={<CategoryPage title="Insurance" subtitle="Policy-ready products and support packs aligned with asset and operational coverage." items={insuranceItems} />} />
+              <Route path="/products/real-estate" element={<CategoryPage title="Real Estate" subtitle="Property-focused products for documentation, valuation, and compliance support." items={realEstateItems} />} />
+              <Route path="/products/finance" element={<CategoryPage title="Finance" subtitle="Finance-ready products with documentation and coordination support." items={financeItems} />} />
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/certificates" element={<CertificatesPage />} />
               <Route path="/signup" element={<SignUpPage setCurrentPage={go} setIsLoggedIn={setIsLoggedIn} />} />
