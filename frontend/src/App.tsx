@@ -696,6 +696,21 @@ const ProductsPage = () => {
       desc: 'Sustainable solar products including inverters, controllers, and solar distribution systems.',
       icon: <Sun size={24} />,
     },
+    {
+      title: 'Real Estate Products',
+      desc: 'Property-focused product support and documentation assistance tailored to residential and commercial needs.',
+      icon: <HomeIcon size={24} />,
+    },
+    {
+      title: 'Finance Products',
+      desc: 'Structured finance-ready products, documentation support, and coordination for business requirements.',
+      icon: <ShieldCheck size={24} />,
+    },
+    {
+      title: 'Insurance Products',
+      desc: 'Policy-ready product packs with advisory support for asset and operational coverage.',
+      icon: <Shield size={24} />,
+    },
   ];
 
   return (
@@ -742,45 +757,6 @@ const ProductsPage = () => {
                 <p className="text-sm text-slate-600">{item.desc}</p>
               </div>
             ))}
-          </div>
-
-          <div className="mt-14">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl font-bold text-slate-900 mb-3">Specialized Product Lines</h2>
-              <p className="text-slate-600 max-w-2xl mx-auto">
-                Focused product categories supporting real estate, finance, and insurance requirements.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  title: 'Real Estate Products',
-                  desc: 'Property-focused product support and documentation assistance tailored to residential and commercial needs.',
-                  icon: <HomeIcon size={22} />,
-                },
-                {
-                  title: 'Finance Products',
-                  desc: 'Structured finance-ready products, documentation support, and coordination for business requirements.',
-                  icon: <ShieldCheck size={22} />,
-                },
-                {
-                  title: 'Insurance Products',
-                  desc: 'Policy-ready product packs with advisory support for asset and operational coverage.',
-                  icon: <Shield size={22} />,
-                },
-              ].map((item) => (
-                <div
-                  key={item.title}
-                  className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center mb-4">
-                    {item.icon}
-                  </div>
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2">{item.title}</h3>
-                  <p className="text-sm text-slate-600">{item.desc}</p>
-                </div>
-              ))}
-            </div>
           </div>
 
           <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
