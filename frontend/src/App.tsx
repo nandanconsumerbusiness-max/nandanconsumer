@@ -770,9 +770,9 @@ const ProductsPage = () => {
       <section id="electronics" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">Electrical & Electronics Product Range</h2>
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">Complete Product Portfolio</h2>
             <p className="text-slate-600 max-w-2xl mx-auto">
-              We supply a wide range of electrical and electronics products for residential, commercial, and industrial needs.
+              We deliver a broad mix of electrical, electronics, finance, real estate, and insurance product lines for residential, commercial, and industrial requirements.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
