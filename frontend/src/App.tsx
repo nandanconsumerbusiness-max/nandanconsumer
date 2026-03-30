@@ -840,6 +840,10 @@ const CategoryPage = ({
     <div className="pt-16">
       <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Link to="/products" className="inline-flex items-center text-white/90 text-sm mb-6 hover:text-white">
+            <ChevronRight className="rotate-180 mr-2" size={16} />
+            Back to All Products
+          </Link>
           <h1 className="text-4xl font-bold mb-4">{title}</h1>
           <p className="text-white/90 max-w-3xl text-lg">{subtitle}</p>
         </div>
