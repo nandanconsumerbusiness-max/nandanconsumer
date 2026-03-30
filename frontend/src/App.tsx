@@ -178,7 +178,7 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
               <span className="text-slate-900 font-bold text-lg uppercase tracking-wider">Nandan Consumer</span>
             </div>
             <p className="text-slate-600 text-sm leading-relaxed mb-6">
-              A registered Indian company dedicated to providing high-quality professional services across real estate, finance, and insurance sectors.
+              A registered Indian company dedicated to providing high-quality product solutions across real estate, finance, and insurance sectors.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition-colors">
@@ -247,10 +247,10 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
 // --- Page Content ---
 
 const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
-  const services = [
-    { title: 'Real Estate Services', icon: <HomeIcon size={24} />, desc: 'Property advisory and support for residential and commercial needs.' },
-    { title: 'Finance Services', icon: <ShieldCheck size={24} />, desc: 'Structured financial guidance with end-to-end coordination.' },
-    { title: 'Insurance Services', icon: <ShieldCheck size={24} />, desc: 'Coverage advisory and policy support tailored to client needs.' },
+  const productSolutions = [
+    { title: 'Real Estate Solutions', icon: <HomeIcon size={24} />, desc: 'Property advisory and support for residential and commercial needs.' },
+    { title: 'Finance Solutions', icon: <ShieldCheck size={24} />, desc: 'Structured financial guidance with end-to-end coordination.' },
+    { title: 'Insurance Solutions', icon: <ShieldCheck size={24} />, desc: 'Coverage advisory and policy support tailored to client needs.' },
   ];
 
   return (
@@ -280,7 +280,7 @@ const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => 
               transition={{ delay: 0.2 }}
               className="text-lg text-slate-600 mb-10 max-w-2xl leading-relaxed"
             >
-              Nandan Consumer Equipments Private Limited provides professional services across Real Estate, Finance, and Insurance sectors with a focus on reliability and transparency.
+              Nandan Consumer Equipments Private Limited provides product solutions across Real Estate, Finance, and Insurance sectors with a focus on reliability and transparency.
             </motion.p>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -321,10 +321,10 @@ const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => 
             <div>
               <h2 className="text-3xl font-bold text-slate-900 mb-6">A Legacy of Trust and Professionalism</h2>
                 <p className="text-slate-600 mb-6 leading-relaxed">
-                  Nandan Consumer Equipments Private Limited is a registered Indian company based in Hyderabad. We focus on delivering trusted real estate, finance, and insurance services with a professional, client-first approach.
+                  Nandan Consumer Equipments Private Limited is a registered Indian company based in Hyderabad. We focus on delivering trusted real estate, finance, and insurance solutions with a professional, client-first approach.
                 </p>
               <p className="text-slate-600 mb-8 leading-relaxed">
-                Our commitment to quality and customer satisfaction has made us a preferred partner for real estate, finance, and insurance services across the region.
+                Our commitment to quality and customer satisfaction has made us a preferred partner for real estate, finance, and insurance solutions across the region.
               </p>
               <div className="grid grid-cols-2 gap-6">
                 <div className="flex items-center space-x-3">
@@ -353,7 +353,7 @@ const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => 
               <p className="text-white/90 max-w-2xl mx-auto">We focus on core service areas tailored to meet the evolving needs of our clients.</p>
             </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, idx) => (
+            {productSolutions.map((service, idx) => (
               <div
                 key={idx}
                 onClick={() => setCurrentPage('products')}
@@ -419,7 +419,7 @@ const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => 
                         <ShieldCheck size={20} className="text-slate-700" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-lg mb-1">Professional Services</h4>
+                        <h4 className="font-bold text-lg mb-1">Specialized Solutions</h4>
                         <p className="text-slate-600 text-sm">Our team consists of experienced professionals dedicated to delivering excellence in every project.</p>
                       </div>
                     </div>
@@ -599,21 +599,21 @@ const AboutPage = () => {
                   NANDAN CONSUMER EQUIPMENTS PRIVATE LIMITED is a registered corporate entity based in Hyderabad, India. Founded with a vision to provide integrated solutions across multiple industrial and consumer sectors, we have grown into a trusted name for quality and reliability.
                 </p>
                 <p>
-                  Our expertise spans Real Estate Services, Finance Services, and Insurance Services. This focused portfolio allows us to offer comprehensive solutions with a single point of contact and clear accountability.
+                  Our expertise spans Real Estate Solutions, Finance Solutions, and Insurance Solutions. This focused portfolio allows us to offer comprehensive solutions with a single point of contact and clear accountability.
                 </p>
                 <p>
-                  We operate with a professional approach, leveraging best practices to deliver services on time with transparent communication.
+                  We operate with a professional approach, leveraging best practices to deliver products on time with transparent communication.
                 </p>
               </div>
             </div>
             <div className="space-y-8">
               <div className="bg-white/90 p-8 rounded-2xl border border-slate-100">
                 <h3 className="text-xl font-bold text-brand-700 mb-4">Our Vision</h3>
-                <p className="text-slate-600">To be a leading professional services company in India, recognized for trust, transparency, and excellence in real estate, finance, and insurance services.</p>
+                <p className="text-slate-600">To be a leading product solutions company in India, recognized for trust, transparency, and excellence in real estate, finance, and insurance solutions.</p>
               </div>
               <div className="bg-white/90 p-8 rounded-2xl border border-slate-100">
                 <h3 className="text-xl font-bold text-brand-700 mb-4">Our Mission</h3>
-                <p className="text-slate-600">To empower our clients through reliable real estate, finance, and insurance services while maintaining the highest standards of professionalism and transparency.</p>
+                <p className="text-slate-600">To empower our clients through reliable real estate, finance, and insurance solutions while maintaining the highest standards of professionalism and transparency.</p>
               </div>
             </div>
           </div>
@@ -652,19 +652,19 @@ const AboutPage = () => {
 const ServicesPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
   const serviceList = [
     {
-      title: 'Real Estate Services',
+      title: 'Real Estate Solutions',
       icon: <HomeIcon size={24} />,
       desc: 'End-to-end real estate support for residential, commercial, and industrial needs with a focus on transparent processes.',
       points: ['Property advisory and sourcing', 'Documentation support', 'Site visits and valuation guidance'],
     },
     {
-      title: 'Finance Services',
+      title: 'Finance Solutions',
       icon: <ShieldCheck size={24} />,
       desc: 'Project and asset-focused financial guidance to help clients structure funding with clarity and confidence.',
       points: ['Requirement assessment', 'Documentation assistance', 'End-to-end coordination'],
     },
     {
-      title: 'Insurance Services',
+      title: 'Insurance Solutions',
       icon: <ShieldCheck size={24} />,
       desc: 'Insurance consulting and policy support tailored to client needs across assets and operations.',
       points: ['Coverage advisory', 'Claim support guidance', 'Policy renewal support'],
@@ -675,9 +675,9 @@ const ServicesPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void })
     <div className="pt-16">
         <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl font-bold mb-4">Services</h1>
+            <h1 className="text-4xl font-bold mb-4">Products</h1>
             <p className="text-white/90 max-w-3xl">
-              We provide professional services across real estate, finance, and insurance domains. Our team focuses on clarity, compliance, and reliable delivery for every engagement.
+              We provide product solutions across real estate, finance, and insurance domains. Our team focuses on clarity, compliance, and reliable delivery for every engagement.
             </p>
           </div>
         </section>
@@ -1623,12 +1623,12 @@ const PrivacyPolicyPage = () => {
               <li><strong>Identity Data</strong> includes first name, last name, username or similar identifier.</li>
               <li><strong>Contact Data</strong> includes email address and telephone numbers.</li>
               <li><strong>Technical Data</strong> includes internet protocol (IP) address, your login data, browser type and version, time zone setting and location.</li>
-              <li><strong>Usage Data</strong> includes information about how you use our website and services.</li>
+              <li><strong>Usage Data</strong> includes information about how you use our website and products.</li>
             </ul>
 
             <h2 className="text-2xl font-bold text-slate-900 mb-6">3. How We Use Your Data</h2>
             <p className="text-slate-600 mb-8 leading-relaxed">
-              We will only use your personal data when the law allows us to. Most commonly, we will use your personal data to contact you regarding your inquiries, to provide our services, and to improve our website experience.
+              We will only use your personal data when the law allows us to. Most commonly, we will use your personal data to contact you regarding your inquiries, to provide our products, and to improve our website experience.
             </p>
 
             <h2 className="text-2xl font-bold text-slate-900 mb-6">4. Data Security</h2>
@@ -1777,12 +1777,12 @@ const TermsPage = () => {
           <div className="prose prose-slate max-w-none">
             <h2 className="text-2xl font-bold text-slate-900 mb-6">1. Acceptance</h2>
             <p className="text-slate-600 mb-8 leading-relaxed">
-              By using our website or services, you agree to these terms. If you do not agree, please do not use our services.
+              By using our website or products, you agree to these terms. If you do not agree, please do not use our products.
             </p>
 
-            <h2 className="text-2xl font-bold text-slate-900 mb-6">2. Services</h2>
+            <h2 className="text-2xl font-bold text-slate-900 mb-6">2. Products</h2>
             <p className="text-slate-600 mb-8 leading-relaxed">
-              We provide professional services across real estate, finance, and insurance. Availability may vary by location and eligibility.
+              We provide product solutions across real estate, finance, and insurance. Availability may vary by location and eligibility.
             </p>
 
             <h2 className="text-2xl font-bold text-slate-900 mb-6">3. User Responsibilities</h2>
