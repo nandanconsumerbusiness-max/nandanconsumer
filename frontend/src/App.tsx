@@ -748,9 +748,9 @@ const ProductsPage = () => {
     <div className="pt-16">
       <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-4">Comprehensive Electrical &amp; Electronics Solutions</h1>
+          <h1 className="text-4xl font-bold mb-4">Comprehensive Product Solutions</h1>
           <p className="text-white/90 max-w-3xl text-lg">
-            We provide end-to-end electrical and electronic products for residential, commercial, and industrial applications.
+            We provide end-to-end electrical, electronics, finance, real estate, and insurance product lines for residential, commercial, and industrial applications.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             {[
