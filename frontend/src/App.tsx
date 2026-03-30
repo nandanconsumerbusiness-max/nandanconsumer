@@ -51,7 +51,6 @@ const Navbar = ({
   setCurrentPage: (p: Page) => void;
   isLoggedIn: boolean;
 }) => {
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -70,17 +69,6 @@ const Navbar = ({
     { label: 'Contact', value: 'contact' },
   ];
 
-  const handleProductAnchor = (anchor: string, closeMenu?: () => void) => {
-    setCurrentPage('products');
-    navigate(`/products#${anchor}`);
-    if (closeMenu) closeMenu();
-    setTimeout(() => {
-      const target = document.getElementById(anchor);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 0);
-  };
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white border-b border-slate-200 py-3' : 'bg-white border-b border-slate-100 py-4'}`}>
@@ -99,48 +87,16 @@ const Navbar = ({
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              link.value === 'products' ? (
-                <div key={link.value} className="relative group">
-                  <Link
-                    to="/products"
-                    className={`group relative text-sm font-semibold transition-colors duration-300 hover:text-brand-700 ${currentPage === 'products' ? 'text-brand-700' : 'text-slate-600'}`}
-                  >
-                    Products
-                    <span
-                      className={`pointer-events-none absolute -bottom-2 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ${currentPage === 'products' ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}
-                    />
-                  </Link>
-                  <div className="absolute left-0 top-full pt-3 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-                    <div className="w-56 rounded-xl border border-slate-200 bg-white shadow-xl p-3">
-                      {[
-                        { label: 'Electronics', anchor: 'electronics' },
-                        { label: 'Insurance Services', anchor: 'insurance' },
-                        { label: 'Real Estate Services', anchor: 'realestate' },
-                        { label: 'Finance Services', anchor: 'finance' },
-                      ].map((item) => (
-                        <button
-                          key={item.anchor}
-                          onClick={() => handleProductAnchor(item.anchor)}
-                          className="block w-full text-left rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition-colors"
-                        >
-                          {item.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <Link
-                  key={link.value}
-                  to={pageToPath[link.value]}
-                  className={`group relative text-sm font-semibold transition-colors duration-300 hover:text-brand-700 ${currentPage === link.value ? 'text-brand-700' : 'text-slate-600'}`}
-                >
-                  {link.label}
-                  <span
-                    className={`pointer-events-none absolute -bottom-2 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ${currentPage === link.value ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}
-                  />
-                </Link>
-              )
+              <Link
+                key={link.value}
+                to={pageToPath[link.value]}
+                className={`group relative text-sm font-semibold transition-colors duration-300 hover:text-brand-700 ${currentPage === link.value ? 'text-brand-700' : 'text-slate-600'}`}
+              >
+                {link.label}
+                <span
+                  className={`pointer-events-none absolute -bottom-2 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ${currentPage === link.value ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}
+                />
+              </Link>
             ))}
             <div className="flex items-center gap-3">
               {isLoggedIn ? (
@@ -190,31 +146,6 @@ const Navbar = ({
                   {link.label}
                 </Link>
               ))}
-              <div className="border-b border-slate-50">
-                <Link
-                  to="/products"
-                  onClick={() => setIsOpen(false)}
-                  className={`block w-full text-left px-3 py-4 text-base font-semibold transition-colors ${currentPage === 'products' ? 'text-brand-700 bg-brand-50/70' : 'text-slate-600 hover:text-brand-700'}`}
-                >
-                  Products
-                </Link>
-                <div className="pb-3">
-                  {[
-                    { label: 'Electronics', anchor: 'electronics' },
-                    { label: 'Insurance Services', anchor: 'insurance' },
-                    { label: 'Real Estate Services', anchor: 'realestate' },
-                    { label: 'Finance Services', anchor: 'finance' },
-                  ].map((item) => (
-                    <button
-                      key={item.anchor}
-                      onClick={() => handleProductAnchor(item.anchor, () => setIsOpen(false))}
-                      className="block w-full text-left px-6 py-2 text-sm font-medium text-slate-600 hover:text-brand-700"
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
               <div className="pt-4">
                 <button 
                   onClick={() => {
@@ -267,7 +198,6 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
             <ul className="space-y-4 text-sm">
               <li><button onClick={() => setCurrentPage('home')} className="hover:text-slate-900 transition-colors">Home</button></li>
               <li><button onClick={() => setCurrentPage('about')} className="hover:text-slate-900 transition-colors">About Us</button></li>
-              <li><Link to="/products#electronics" className="hover:text-slate-900 transition-colors">Electronics</Link></li>
               <li><button onClick={() => setCurrentPage('products')} className="hover:text-slate-900 transition-colors">Products</button></li>
               <li><button onClick={() => setCurrentPage('certificates')} className="hover:text-slate-900 transition-colors">Certificates</button></li>
               <li><button onClick={() => setCurrentPage('contact')} className="hover:text-slate-900 transition-colors">Contact</button></li>
@@ -275,11 +205,11 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
           </div>
 
           <div>
-            <h4 className="text-slate-900 font-semibold mb-6 uppercase text-xs tracking-widest">Business Areas</h4>
+            <h4 className="text-slate-900 font-semibold mb-6 uppercase text-xs tracking-widest">Product Focus</h4>
             <ul className="space-y-4 text-sm text-slate-600">
-              <li>Finance Services</li>
-              <li>Insurance Services</li>
-              <li>Real Estate Services</li>
+              <li>Electrical Products</li>
+              <li>Electronics</li>
+              <li>Solar Electricals</li>
             </ul>
           </div>
 
@@ -903,29 +833,6 @@ const ProductsPage = () => {
       icon: <Sun size={24} />,
     },
   ];
-  const serviceList = [
-    {
-      id: 'realestate',
-      title: 'Real Estate Services',
-      icon: <HomeIcon size={24} />,
-      desc: 'End-to-end real estate support for residential, commercial, and industrial needs with a focus on transparent processes.',
-      points: ['Property advisory and sourcing', 'Documentation support', 'Site visits and valuation guidance'],
-    },
-    {
-      id: 'finance',
-      title: 'Finance Services',
-      icon: <ShieldCheck size={24} />,
-      desc: 'Project and asset-focused financial guidance to help clients structure funding with clarity and confidence.',
-      points: ['Requirement assessment', 'Documentation assistance', 'End-to-end coordination'],
-    },
-    {
-      id: 'insurance',
-      title: 'Insurance Services',
-      icon: <Shield size={24} />,
-      desc: 'Insurance consulting and policy support tailored to client needs across assets and operations.',
-      points: ['Coverage advisory', 'Claim support guidance', 'Policy renewal support'],
-    },
-  ];
 
   return (
     <div className="pt-16">
@@ -974,38 +881,6 @@ const ProductsPage = () => {
           </div>
 
 
-
-          <div className="mt-16">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-4">Service Solutions</h2>
-              <p className="text-slate-600 max-w-2xl mx-auto">
-                Professional real estate, finance, and insurance services delivered with clarity, compliance, and reliable execution.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {serviceList.map((service) => (
-                <div
-                  key={service.id}
-                  id={service.id}
-                  className="group bg-gradient-to-br from-white via-[#f8fbff] to-[#eef7ff] p-8 rounded-2xl border border-slate-200 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.03] hover:shadow-xl hover:border-[#60a5fa]"
-                >
-                  <div className="w-14 h-14 bg-[#eef7ff] rounded-xl flex items-center justify-center text-brand-600 mb-6 transition-transform duration-300 group-hover:scale-110">
-                    {service.icon}
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-3">{service.title}</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed mb-6">{service.desc}</p>
-                  <ul className="text-sm text-slate-600 space-y-2">
-                    {service.points.map((point) => (
-                      <li key={point} className="flex items-start">
-                        <span className="mt-1.5 mr-2 h-1.5 w-1.5 rounded-full bg-brand-500" />
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
 
           <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div className="rounded-2xl border border-slate-200 p-6 bg-white shadow-sm">
@@ -1989,7 +1864,7 @@ const DashboardPage = ({
             <div className="grid grid-cols-2 gap-3 text-sm">
               <button onClick={() => setCurrentPage('home')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Home</button>
               <button onClick={() => setCurrentPage('about')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">About</button>
-              <button onClick={() => setCurrentPage('products')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Electronics</button>
+              <button onClick={() => setCurrentPage('products')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Products</button>
               <button onClick={() => setCurrentPage('products')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Products</button>
               <button onClick={() => setCurrentPage('certificates')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Certificates</button>
               <button onClick={() => setCurrentPage('contact')} className="rounded-full border border-slate-300 py-2 hover:bg-slate-50">Contact</button>
