@@ -17,12 +17,11 @@ import gallery11 from './assets/Photos-3-001/IMG20170911115032.jpg';
 import gallery12 from './assets/Photos-3-001/Photo0015.jpg';
 
 // --- Types ---
-export type Page = 'home' | 'about' | 'services' | 'products' | 'gallery' | 'certificates' | 'signup' | 'contact' | 'privacy' | 'terms' | 'dashboard';
+export type Page = 'home' | 'about' | 'products' | 'gallery' | 'certificates' | 'signup' | 'contact' | 'privacy' | 'terms' | 'dashboard';
 
 const pageToPath: Record<Page, string> = {
   home: '/',
   about: '/about',
-  services: '/services',
   products: '/products',
   gallery: '/gallery',
   certificates: '/certificates',
@@ -641,141 +640,6 @@ const AboutPage = () => {
               <div className="text-brand-600 font-bold text-4xl mb-4">03</div>
               <h4 className="text-lg font-bold mb-2">Delivery & Support</h4>
               <p className="text-slate-600 text-sm">We ensure timely delivery and provide ongoing support to ensure long-term success for our clients.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-};
-
-const ServicesPage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
-  const serviceList = [
-    {
-      title: 'Real Estate Products',
-      icon: <HomeIcon size={24} />,
-      desc: 'End-to-end real estate support for residential, commercial, and industrial needs with a focus on transparent processes.',
-      points: ['Property advisory and sourcing', 'Documentation support', 'Site visits and valuation guidance'],
-    },
-    {
-      title: 'Finance Products',
-      icon: <ShieldCheck size={24} />,
-      desc: 'Project and asset-focused financial guidance to help clients structure funding with clarity and confidence.',
-      points: ['Requirement assessment', 'Documentation assistance', 'End-to-end coordination'],
-    },
-    {
-      title: 'Insurance Products',
-      icon: <ShieldCheck size={24} />,
-      desc: 'Insurance consulting and policy support tailored to client needs across assets and operations.',
-      points: ['Coverage advisory', 'Claim support guidance', 'Policy renewal support'],
-    },
-  ];
-
-  return (
-    <div className="pt-16">
-        <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl font-bold mb-4">Products</h1>
-            <p className="text-white/90 max-w-3xl">
-              We provide product products across real estate, finance, and insurance domains. Our team focuses on clarity, compliance, and reliable delivery for every engagement.
-            </p>
-          </div>
-        </section>
-
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">What We Offer</h2>
-            <p className="text-white/90 max-w-2xl mx-auto">
-              Structured service delivery backed by experienced professionals and a commitment to quality.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {serviceList.map((service, idx) => (
-              <div key={idx} className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all">
-                <div className="w-14 h-14 bg-brand-50 rounded-lg flex items-center justify-center text-brand-600 mb-6">
-                  {service.icon}
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{service.title}</h3>
-                <p className="text-slate-600 text-sm leading-relaxed mb-6">{service.desc}</p>
-                <ul className="text-sm text-slate-600 space-y-2">
-                  {service.points.map((point, pIdx) => (
-                    <li key={pIdx} className="flex items-start">
-                      <span className="mt-1.5 mr-2 h-1.5 w-1.5 rounded-full bg-brand-500" />
-                      <span>{point}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-24 bg-slate-50/70">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">How We Work</h2>
-              <p className="text-slate-600 mb-6 leading-relaxed">
-                Our process is designed to be transparent and client-first. We begin with requirement mapping, move to structured planning, and execute with consistent updates at every milestone.
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <div className="w-9 h-9 rounded-full bg-brand-100 text-brand-700 font-bold flex items-center justify-center mr-4">1</div>
-                  <div>
-                    <h4 className="font-semibold text-slate-900">Requirement Mapping</h4>
-                    <p className="text-sm text-slate-600">We capture scope, timelines, and compliance needs early to avoid surprises later.</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-9 h-9 rounded-full bg-brand-100 text-brand-700 font-bold flex items-center justify-center mr-4">2</div>
-                  <div>
-                    <h4 className="font-semibold text-slate-900">Planning & Coordination</h4>
-                    <p className="text-sm text-slate-600">Dedicated coordination for documentation, approvals, and service scheduling.</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-9 h-9 rounded-full bg-brand-100 text-brand-700 font-bold flex items-center justify-center mr-4">3</div>
-                  <div>
-                    <h4 className="font-semibold text-slate-900">Execution & Support</h4>
-                    <p className="text-sm text-slate-600">Consistent progress updates with post-service guidance and assistance.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white p-10 rounded-3xl border border-slate-200 shadow-xl shadow-slate-100">
-              <h3 className="text-2xl font-bold text-slate-900 mb-6">Service Highlights</h3>
-              <div className="space-y-5 text-sm text-slate-600">
-                <div className="flex items-start">
-                  <ShieldCheck size={18} className="text-brand-600 mr-3 mt-1" />
-                  <span>Professional handling with attention to compliance and documentation quality.</span>
-                </div>
-                <div className="flex items-start">
-                  <ShieldCheck size={18} className="text-brand-600 mr-3 mt-1" />
-                  <span>Clear communication across project stages with predictable timelines.</span>
-                </div>
-                <div className="flex items-start">
-                  <ShieldCheck size={18} className="text-brand-600 mr-3 mt-1" />
-                  <span>Single-window coordination for multi-service requirements.</span>
-                </div>
-                <div className="flex items-start">
-                  <ShieldCheck size={18} className="text-brand-600 mr-3 mt-1" />
-                  <span>Trusted delivery backed by experienced teams and partners.</span>
-                </div>
-              </div>
-              <div className="mt-10">
-                <button
-                  onClick={() => setCurrentPage('contact')}
-                  className="w-full bg-brand-600 text-white py-4 rounded-lg font-bold hover:bg-brand-700 transition-all shadow-lg shadow-brand-100"
-                >
-                  Request a Consultation
-                </button>
-                <div className="mt-4 flex items-center justify-center text-slate-600 font-semibold">
-                  <Phone size={18} className="mr-2 text-brand-600" />
-                  <span>+91 63017 21221</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -1968,7 +1832,6 @@ function AppShell() {
             <Routes>
               <Route path="/" element={<HomePage setCurrentPage={go} />} />
               <Route path="/about" element={<AboutPage />} />
-              <Route path="/services" element={<Navigate to="/products" replace />} />
               <Route path="/products" element={<ProductsPage />} />
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/certificates" element={<CertificatesPage />} />
