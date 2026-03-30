@@ -34,6 +34,9 @@ const pageToPath: Record<Page, string> = {
 
 const pathToPage = (path: string): Page => {
   const normalized = path.split('?')[0];
+  if (normalized.startsWith('/products')) {
+    return 'products';
+  }
   const entry = (Object.entries(pageToPath) as [Page, string][])
     .find(([, p]) => p === normalized);
   return entry ? entry[0] : 'home';
@@ -67,6 +70,13 @@ const Navbar = ({
     { label: 'Certificates', value: 'certificates' },
     { label: 'Contact', value: 'contact' },
   ];
+  const productMenu = [
+    { label: 'Electrical Products', href: '/products/electrical' },
+    { label: 'Electronics Products', href: '/products/electronics' },
+    { label: 'Insurance Products', href: '/products/insurance' },
+    { label: 'Real Estate Products', href: '/products/real-estate' },
+    { label: 'Finance Products', href: '/products/finance' },
+  ];
 
 
   return (
@@ -86,16 +96,43 @@ const Navbar = ({
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <Link
-                key={link.value}
-                to={pageToPath[link.value]}
-                className={`group relative text-sm font-semibold transition-colors duration-300 hover:text-brand-700 ${currentPage === link.value ? 'text-brand-700' : 'text-slate-600'}`}
-              >
-                {link.label}
-                <span
-                  className={`pointer-events-none absolute -bottom-2 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ${currentPage === link.value ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}
-                />
-              </Link>
+              link.value === 'products' ? (
+                <div key={link.value} className="relative group">
+                  <Link
+                    to={pageToPath[link.value]}
+                    className={`group relative text-sm font-semibold transition-colors duration-300 hover:text-brand-700 ${currentPage === link.value ? 'text-brand-700' : 'text-slate-600'}`}
+                  >
+                    {link.label}
+                    <span
+                      className={`pointer-events-none absolute -bottom-2 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ${currentPage === link.value ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}
+                    />
+                  </Link>
+                  <div className="absolute left-0 top-full pt-3 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
+                    <div className="w-64 rounded-xl border border-slate-200 bg-white shadow-xl p-3">
+                      {productMenu.map((item) => (
+                        <Link
+                          key={item.href}
+                          to={item.href}
+                          className="block rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition-colors"
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={link.value}
+                  to={pageToPath[link.value]}
+                  className={`group relative text-sm font-semibold transition-colors duration-300 hover:text-brand-700 ${currentPage === link.value ? 'text-brand-700' : 'text-slate-600'}`}
+                >
+                  {link.label}
+                  <span
+                    className={`pointer-events-none absolute -bottom-2 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ${currentPage === link.value ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}
+                  />
+                </Link>
+              )
             ))}
             <div className="flex items-center gap-3">
               {isLoggedIn ? (
@@ -136,14 +173,38 @@ const Navbar = ({
           >
             <div className="px-4 pt-2 pb-6 space-y-1">
               {navLinks.map((link) => (
-                <Link
-                  key={link.value}
-                  to={pageToPath[link.value]}
-                  onClick={() => setIsOpen(false)}
-                  className={`block w-full text-left px-3 py-4 text-base font-semibold border-b border-slate-50 transition-colors ${currentPage === link.value ? 'text-brand-700 bg-brand-50/70' : 'text-slate-600 hover:text-brand-700'}`}
-                >
-                  {link.label}
-                </Link>
+                link.value === 'products' ? (
+                  <div key={link.value} className="border-b border-slate-50">
+                    <Link
+                      to={pageToPath[link.value]}
+                      onClick={() => setIsOpen(false)}
+                      className={`block w-full text-left px-3 py-4 text-base font-semibold transition-colors ${currentPage === link.value ? 'text-brand-700 bg-brand-50/70' : 'text-slate-600 hover:text-brand-700'}`}
+                    >
+                      {link.label}
+                    </Link>
+                    <div className="pb-3">
+                      {productMenu.map((item) => (
+                        <Link
+                          key={item.href}
+                          to={item.href}
+                          onClick={() => setIsOpen(false)}
+                          className="block px-6 py-2 text-sm font-medium text-slate-600 hover:text-brand-700"
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <Link
+                    key={link.value}
+                    to={pageToPath[link.value]}
+                    onClick={() => setIsOpen(false)}
+                    className={`block w-full text-left px-3 py-4 text-base font-semibold border-b border-slate-50 transition-colors ${currentPage === link.value ? 'text-brand-700 bg-brand-50/70' : 'text-slate-600 hover:text-brand-700'}`}
+                  >
+                    {link.label}
+                  </Link>
+                )
               ))}
               <div className="pt-4">
                 <button 
@@ -652,64 +713,34 @@ const ProductsPage = () => {
   const navigate = useNavigate();
   const products = [
     {
-      title: 'Electrical Cables & Wires',
-      desc: 'High-quality house wiring, industrial cables, and flexible cords designed for durability, safety, and long-term performance.',
-      icon: <Cable size={24} />,
-    },
-    {
-      title: 'Switchgear & Protection',
-      desc: 'Advanced protection devices including MCB, MCCB, RCCB, isolators, and surge protectors ensuring complete electrical safety.',
-      icon: <Shield size={24} />,
-    },
-    {
-      title: 'Panels & Control Systems',
-      desc: 'Custom-built LT panels, control panels, starters, and automation-ready products for industrial efficiency.',
+      title: 'Electrical Products',
+      desc: 'Cables, switchgear, panels, lighting, earthing, and installation accessories.',
       icon: <Zap size={24} />,
+      href: '/products/electrical',
     },
     {
-      title: 'Lighting Solutions',
-      desc: 'Energy-efficient LED lighting products for indoor, outdoor, commercial, and industrial environments.',
-      icon: <Lightbulb size={24} />,
-    },
-    {
-      title: 'Earthing & Lightning',
-      desc: 'Reliable earthing systems and lightning protection products for enhanced safety and compliance.',
-      icon: <ShieldCheck size={24} />,
-    },
-    {
-      title: 'Electrical Accessories',
-      desc: 'Complete range of switches, sockets, conduits, and wiring accessories for all installation needs.',
-      icon: <Plug size={24} />,
-    },
-    {
-      title: 'Electronics & Components',
-      desc: 'Essential components including power supplies, connectors, sensors, and adapters for modern applications.',
+      title: 'Electronics Products',
+      desc: 'Components, adapters, sensors, power supplies, and consumer electronics.',
       icon: <Cpu size={24} />,
-    },
-    {
-      title: 'Consumer Electronics',
-      desc: 'Home and office electronics including power backup systems and essential appliances.',
-      icon: <HomeIcon size={24} />,
-    },
-    {
-      title: 'Solar Electricals',
-      desc: 'Sustainable solar products including inverters, controllers, and solar distribution systems.',
-      icon: <Sun size={24} />,
-    },
-    {
-      title: 'Real Estate Products',
-      desc: 'Property-focused product support and documentation assistance tailored to residential and commercial needs.',
-      icon: <HomeIcon size={24} />,
-    },
-    {
-      title: 'Finance Products',
-      desc: 'Structured finance-ready products, documentation support, and coordination for business requirements.',
-      icon: <ShieldCheck size={24} />,
+      href: '/products/electronics',
     },
     {
       title: 'Insurance Products',
       desc: 'Policy-ready product packs with advisory support for asset and operational coverage.',
       icon: <Shield size={24} />,
+      href: '/products/insurance',
+    },
+    {
+      title: 'Real Estate Products',
+      desc: 'Property-focused product support and documentation assistance for residential and commercial needs.',
+      icon: <HomeIcon size={24} />,
+      href: '/products/real-estate',
+    },
+    {
+      title: 'Finance Products',
+      desc: 'Structured finance-ready products, documentation support, and coordination for business requirements.',
+      icon: <ShieldCheck size={24} />,
+      href: '/products/finance',
     },
   ];
 
@@ -746,8 +777,9 @@ const ProductsPage = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((item, idx) => (
-              <div
+              <Link
                 key={idx}
+                to={item.href}
                 className="group rounded-2xl border border-slate-200 bg-gradient-to-br from-white via-[#f8fbff] to-[#eef7ff] p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.05] hover:shadow-xl hover:border-[#60a5fa]"
               >
                 <div className="w-12 h-12 rounded-xl bg-[#eef7ff] text-[#0b6fe0] flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110">
@@ -755,7 +787,7 @@ const ProductsPage = () => {
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">{item.title}</h3>
                 <p className="text-sm text-slate-600">{item.desc}</p>
-              </div>
+              </Link>
             ))}
           </div>
 
@@ -794,6 +826,90 @@ const ProductsPage = () => {
     </div>
   );
 };
+
+const CategoryPage = ({
+  title,
+  subtitle,
+  items,
+}: {
+  title: string;
+  subtitle: string;
+  items: { title: string; desc: string }[];
+}) => {
+  return (
+    <div className="pt-16">
+      <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-bold mb-4">{title}</h1>
+          <p className="text-white/90 max-w-3xl text-lg">{subtitle}</p>
+        </div>
+      </section>
+
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {items.map((item) => (
+              <div
+                key={item.title}
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-all"
+              >
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">{item.title}</h3>
+                <p className="text-sm text-slate-600">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-14 text-center">
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 rounded-full bg-brand-600 text-white px-6 py-3 text-sm font-semibold shadow-sm hover:bg-brand-700 transition"
+            >
+              Contact Us for Bulk Orders
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+const electricalItems = [
+  { title: 'Cables & Wires', desc: 'House wiring, industrial cables, and flexible cords built for durability and safety.' },
+  { title: 'Switchgear & Protection', desc: 'MCB, MCCB, RCCB, isolators, and surge protection for complete safety.' },
+  { title: 'Panels & Control Systems', desc: 'LT panels, control panels, starters, and automation-ready assemblies.' },
+  { title: 'Lighting Solutions', desc: 'Energy-efficient LED lighting for indoor, outdoor, and industrial use.' },
+  { title: 'Earthing & Lightning', desc: 'Reliable earthing systems and lightning protection products.' },
+  { title: 'Electrical Accessories', desc: 'Switches, sockets, conduits, and wiring accessories for installations.' },
+];
+
+const electronicsItems = [
+  { title: 'Components & Connectors', desc: 'Essential connectors, terminals, and components for modern builds.' },
+  { title: 'Power Supplies & Adapters', desc: 'Stable power supplies, adapters, and conversion products.' },
+  { title: 'Sensors & Controls', desc: 'Sensors, relays, and control units for automation needs.' },
+  { title: 'Consumer Electronics', desc: 'Home and office electronics for everyday requirements.' },
+  { title: 'Power Backup Systems', desc: 'UPS, inverters, and backup solutions for critical operations.' },
+  { title: 'Solar Controllers', desc: 'Charge controllers and electronics for solar systems.' },
+];
+
+const insuranceItems = [
+  { title: 'Coverage Products', desc: 'Policy-ready product packs tailored to asset and operational coverage.' },
+  { title: 'Asset Protection', desc: 'Solutions designed for equipment, property, and operational risk coverage.' },
+  { title: 'Claim Support Kits', desc: 'Documentation and advisory-ready products for claim processes.' },
+  { title: 'Renewal Support', desc: 'Product bundles to simplify renewals and compliance follow-ups.' },
+];
+
+const realEstateItems = [
+  { title: 'Property Documentation', desc: 'Documentation-focused product support for residential and commercial needs.' },
+  { title: 'Site Support Kits', desc: 'On-ground support packs for visits, evaluations, and verification.' },
+  { title: 'Valuation Support', desc: 'Valuation-ready products and structured assistance.' },
+  { title: 'Compliance Packs', desc: 'Process-ready products to streamline property compliance.' },
+];
+
+const financeItems = [
+  { title: 'Documentation Packs', desc: 'Structured documentation products for finance workflows.' },
+  { title: 'Funding Coordination', desc: 'Products and checklists aligned with funding requirements.' },
+  { title: 'Asset Finance', desc: 'Finance-ready product bundles for asset acquisition support.' },
+  { title: 'Business Compliance', desc: 'Product packs that aid in approvals and compliance alignment.' },
+];
 
 const ComingSoonPage = ({ title }: { title: string }) => {
   return (
@@ -1807,6 +1923,11 @@ function AppShell() {
               <Route path="/" element={<HomePage setCurrentPage={go} />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/products" element={<ProductsPage />} />
+              <Route path="/products/electrical" element={<CategoryPage title="Electrical Products" subtitle="Cables, switchgear, panels, lighting, earthing, and accessories for all installation needs." items={electricalItems} />} />
+              <Route path="/products/electronics" element={<CategoryPage title="Electronics Products" subtitle="Components, adapters, sensors, power supplies, and consumer electronics." items={electronicsItems} />} />
+              <Route path="/products/insurance" element={<CategoryPage title="Insurance Products" subtitle="Policy-ready products and support packs aligned with asset and operational coverage." items={insuranceItems} />} />
+              <Route path="/products/real-estate" element={<CategoryPage title="Real Estate Products" subtitle="Property-focused products for documentation, valuation, and compliance support." items={realEstateItems} />} />
+              <Route path="/products/finance" element={<CategoryPage title="Finance Products" subtitle="Finance-ready products with documentation and coordination support." items={financeItems} />} />
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/certificates" element={<CertificatesPage />} />
               <Route path="/signup" element={<SignUpPage setCurrentPage={go} setIsLoggedIn={setIsLoggedIn} />} />
