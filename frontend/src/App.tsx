@@ -856,19 +856,19 @@ const GroceryPage = () => {
       title: 'Basic Package',
       subtitle: 'Perfect for individuals or small families',
       items: ['Rice – 5kg', 'Wheat Flour – 5kg', 'Dal – 2kg', 'Cooking Oil – 1L', 'Sugar – 1kg', 'Salt & Basic Spices'],
-      price: '₹XXXX',
+      note: 'Simple, essential, and budget-friendly for everyday needs.',
     },
     {
       title: 'Standard Package',
       subtitle: 'Ideal for medium-sized families',
       items: ['Rice – 10kg', 'Wheat Flour – 10kg', 'Mixed Pulses – 4kg', 'Cooking Oil – 2L', 'Sugar – 2kg', 'Tea, Spices & Essentials'],
-      price: '₹XXXX',
+      note: 'Balanced package with all must-have kitchen essentials.',
     },
     {
       title: 'Premium Package',
       subtitle: 'Complete solution for large families',
       items: ['Rice – 15kg', 'Wheat Flour – 15kg', 'Pulses – 6kg', 'Cooking Oil – 3L', 'Sugar – 3kg', 'Dry Fruits, Spices, Tea, Snacks'],
-      price: '₹XXXX',
+      note: 'Everything you need for a complete and comfortable month.',
     },
   ];
 
@@ -931,17 +931,21 @@ const GroceryPage = () => {
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-1">{pack.title}</h3>
                 <p className="text-sm text-slate-500 mb-4">{pack.subtitle}</p>
+                <div className="text-sm font-semibold text-slate-800 mb-3">Includes:</div>
                 <ul className="text-sm text-slate-600 space-y-2 mb-6">
                   {pack.items.map((item) => (
                     <li key={item} className="flex items-start gap-2">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-brand-500" />
+                      <CheckCircle2 size={16} className="text-brand-600 mt-0.5" />
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="text-brand-700 font-semibold">Price: {pack.price}</div>
+                <div className="text-slate-600 text-sm font-medium">👉 {pack.note}</div>
               </div>
             ))}
+          </div>
+          <div className="mt-8 text-center text-slate-700 font-semibold">
+            👉 Need a custom package? Contact us for personalized grocery bundles.
           </div>
         </div>
       </section>
