@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate, Navigate } from 'react-router-dom';
-import { Menu, X, Phone, Mail, MapPin, ChevronRight, Facebook, Linkedin, Twitter, ShieldCheck, Zap, Home as HomeIcon, Eye, EyeOff, Info, UserCircle, Download, Cable, Shield, Lightbulb, Plug, Cpu, Sun, Boxes, CheckCircle2 } from 'lucide-react';
+import { Menu, X, Phone, Mail, MapPin, ChevronRight, Facebook, Linkedin, Twitter, ShieldCheck, Zap, Home as HomeIcon, Eye, EyeOff, Info, UserCircle, Download, Cable, Shield, Lightbulb, Plug, Cpu, Sun, Boxes, CheckCircle2, ShoppingCart, Package, Truck, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import logo from './assets/logo.jpeg';
 import gallery1 from './assets/Photos-3-001/IMG_20240316_162436.jpg';
@@ -835,33 +835,187 @@ const ProductsPage = () => {
 };
 
 const GroceryPage = () => {
+  const scrollToPackages = () => {
+    const target = document.getElementById('grocery-packages');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const whyPoints = [
+    'One-month complete grocery solution',
+    'High-quality and trusted products',
+    'Budget-friendly pricing',
+    'Saves time and effort',
+    'Ideal for families, bachelors, and working professionals',
+    'Convenient doorstep delivery (if applicable)',
+  ];
+
+  const packages = [
+    {
+      title: 'Basic Package',
+      subtitle: 'Perfect for individuals or small families',
+      items: ['Rice – 5kg', 'Wheat Flour – 5kg', 'Dal – 2kg', 'Cooking Oil – 1L', 'Sugar – 1kg', 'Salt & Basic Spices'],
+      price: '₹XXXX',
+    },
+    {
+      title: 'Standard Package',
+      subtitle: 'Ideal for medium-sized families',
+      items: ['Rice – 10kg', 'Wheat Flour – 10kg', 'Mixed Pulses – 4kg', 'Cooking Oil – 2L', 'Sugar – 2kg', 'Tea, Spices & Essentials'],
+      price: '₹XXXX',
+    },
+    {
+      title: 'Premium Package',
+      subtitle: 'Complete solution for large families',
+      items: ['Rice – 15kg', 'Wheat Flour – 15kg', 'Pulses – 6kg', 'Cooking Oil – 3L', 'Sugar – 3kg', 'Dry Fruits, Spices, Tea, Snacks'],
+      price: '₹XXXX',
+    },
+  ];
+
   return (
     <div className="pt-16">
       <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-4">Grocery</h1>
+          <h1 className="text-4xl font-bold mb-4">Monthly Grocery Packages – Smart, Simple &amp; Affordable</h1>
           <p className="text-white/90 max-w-3xl text-lg">
-            Essential grocery products curated for everyday household and business needs.
+            Get all your essential groceries in one convenient package, carefully curated for your monthly needs. Save time, money, and effort with our ready-to-use grocery bundles.
           </p>
+          <button
+            onClick={scrollToPackages}
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-white text-brand-700 px-6 py-3 text-sm font-semibold shadow-sm hover:shadow-[0_10px_25px_rgba(255,255,255,0.25)] transition"
+          >
+            <ShoppingCart size={18} />
+            View Packages
+          </button>
         </div>
       </section>
 
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { title: 'Staples & Grains', desc: 'Rice, wheat flour, pulses, and daily essentials.' },
-              { title: 'Cooking Essentials', desc: 'Spices, oils, and pantry basics for everyday cooking.' },
-              { title: 'Beverages', desc: 'Tea, coffee, and refreshment options.' },
-              { title: 'Packaged Foods', desc: 'Ready-to-cook and convenient packaged products.' },
-              { title: 'Household Care', desc: 'Cleaning and home care supplies.' },
-              { title: 'Personal Care', desc: 'Personal hygiene and daily care products.' },
-            ].map((item) => (
-              <div key={item.title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-all">
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">{item.title}</h3>
-                <p className="text-sm text-slate-600">{item.desc}</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            <div>
+              <h2 className="text-3xl font-bold text-slate-900 mb-4">What Are Our Grocery Packages?</h2>
+              <p className="text-slate-600 leading-relaxed mb-4">
+                Our grocery packages are thoughtfully designed bundles that include all essential items required for a household for one month. These packages eliminate the hassle of frequent shopping and ensure you always have the necessary ingredients at home.
+              </p>
+              <p className="text-slate-600 leading-relaxed">
+                From daily staples like rice, wheat, and pulses to cooking essentials like oil, spices, and sugar – everything is included in one simple package.
+              </p>
+            </div>
+            <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-white via-[#f8fbff] to-[#eef7ff] p-8 shadow-sm">
+              <h3 className="text-xl font-bold text-slate-900 mb-4">Why Choose Our Grocery Packages</h3>
+              <ul className="space-y-3 text-slate-700">
+                {whyPoints.map((point) => (
+                  <li key={point} className="flex items-start gap-3">
+                    <CheckCircle2 size={18} className="text-brand-600 mt-0.5" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="grocery-packages" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">Our Packages</h2>
+            <p className="text-slate-600 max-w-2xl mx-auto">Choose the package that best fits your household needs.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {packages.map((pack) => (
+              <div key={pack.title} className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl transition-all">
+                <div className="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center mb-4">
+                  <Package size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-1">{pack.title}</h3>
+                <p className="text-sm text-slate-500 mb-4">{pack.subtitle}</p>
+                <ul className="text-sm text-slate-600 space-y-2 mb-6">
+                  {pack.items.map((item) => (
+                    <li key={item} className="flex items-start gap-2">
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-brand-500" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="text-brand-700 font-semibold">Price: {pack.price}</div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-slate-50/70">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl font-bold text-slate-900 mb-6">How It Works</h2>
+              <div className="space-y-4">
+                {[
+                  'Choose your preferred package',
+                  'Place your order',
+                  'We prepare your grocery bundle',
+                  'Get it delivered to your doorstep',
+                ].map((step, idx) => (
+                  <div key={step} className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full bg-brand-100 text-brand-700 font-bold flex items-center justify-center">
+                      {idx + 1}
+                    </div>
+                    <p className="text-slate-600">{step}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+              <h3 className="text-xl font-bold text-slate-900 mb-4">Who Is This For?</h3>
+              <ul className="space-y-3 text-slate-700">
+                {[
+                  'Families looking for convenience',
+                  'Working professionals with busy schedules',
+                  'Students & bachelors',
+                  'Anyone who wants a hassle-free monthly grocery solution',
+                ].map((point) => (
+                  <li key={point} className="flex items-start gap-3">
+                    <CheckCircle2 size={18} className="text-brand-600 mt-0.5" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-white via-[#f8fbff] to-[#eef7ff] p-10 text-center">
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">Simplify Your Monthly Shopping Today</h2>
+            <p className="text-slate-600 mb-8">Choose your package and enjoy stress-free grocery shopping every month.</p>
+            <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-brand-600 text-white px-8 py-3 text-sm font-semibold shadow-sm hover:bg-brand-700 transition">
+              Order Now / Contact Us
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+              <div className="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center mb-4">
+                <Star size={20} />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Customer Satisfaction</h3>
+              <p className="text-slate-600">We focus on quality, affordability, and convenience to ensure the best experience for our customers.</p>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+              <div className="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center mb-4">
+                <Truck size={20} />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Custom Packages</h3>
+              <p className="text-slate-600">Need something different? Contact us to customize your grocery package as per your requirements.</p>
+            </div>
           </div>
         </div>
       </section>
