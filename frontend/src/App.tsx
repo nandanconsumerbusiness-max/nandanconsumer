@@ -17,12 +17,13 @@ import gallery11 from './assets/Photos-3-001/IMG20170911115032.jpg';
 import gallery12 from './assets/Photos-3-001/Photo0015.jpg';
 
 // --- Types ---
-export type Page = 'home' | 'about' | 'products' | 'gallery' | 'certificates' | 'signup' | 'contact' | 'privacy' | 'terms' | 'dashboard';
+export type Page = 'home' | 'about' | 'products' | 'grocery' | 'gallery' | 'certificates' | 'signup' | 'contact' | 'privacy' | 'terms' | 'dashboard';
 
 const pageToPath: Record<Page, string> = {
   home: '/',
   about: '/about',
   products: '/products',
+  grocery: '/grocery',
   gallery: '/gallery',
   certificates: '/certificates',
   signup: '/signup',
@@ -66,6 +67,7 @@ const Navbar = ({
     { label: 'Home', value: 'home' },
     { label: 'About Us', value: 'about' },
     { label: 'Products', value: 'products' },
+    { label: 'Grocery', value: 'grocery' },
     { label: 'Gallery', value: 'gallery' },
     { label: 'Certificates', value: 'certificates' },
     { label: 'Contact', value: 'contact' },
@@ -259,6 +261,7 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
               <li><button onClick={() => setCurrentPage('home')} className="hover:text-slate-900 transition-colors">Home</button></li>
               <li><button onClick={() => setCurrentPage('about')} className="hover:text-slate-900 transition-colors">About Us</button></li>
               <li><button onClick={() => setCurrentPage('products')} className="hover:text-slate-900 transition-colors">Products</button></li>
+              <li><button onClick={() => setCurrentPage('grocery')} className="hover:text-slate-900 transition-colors">Grocery</button></li>
               <li><button onClick={() => setCurrentPage('certificates')} className="hover:text-slate-900 transition-colors">Certificates</button></li>
               <li><button onClick={() => setCurrentPage('contact')} className="hover:text-slate-900 transition-colors">Contact</button></li>
             </ul>
@@ -820,6 +823,41 @@ const ProductsPage = () => {
                 Contact Us for Bulk Orders
               </button>
             </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+const GroceryPage = () => {
+  return (
+    <div className="pt-16">
+      <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-bold mb-4">Grocery</h1>
+          <p className="text-white/90 max-w-3xl text-lg">
+            Essential grocery products curated for everyday household and business needs.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { title: 'Staples & Grains', desc: 'Rice, wheat flour, pulses, and daily essentials.' },
+              { title: 'Cooking Essentials', desc: 'Spices, oils, and pantry basics for everyday cooking.' },
+              { title: 'Beverages', desc: 'Tea, coffee, and refreshment options.' },
+              { title: 'Packaged Foods', desc: 'Ready-to-cook and convenient packaged products.' },
+              { title: 'Household Care', desc: 'Cleaning and home care supplies.' },
+              { title: 'Personal Care', desc: 'Personal hygiene and daily care products.' },
+            ].map((item) => (
+              <div key={item.title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-all">
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">{item.title}</h3>
+                <p className="text-sm text-slate-600">{item.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -1927,6 +1965,7 @@ function AppShell() {
               <Route path="/" element={<HomePage setCurrentPage={go} />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/products" element={<ProductsPage />} />
+              <Route path="/grocery" element={<GroceryPage />} />
               <Route path="/products/electrical" element={<CategoryPage title="Electrical Products" subtitle="Cables, switchgear, panels, lighting, earthing, and accessories for all installation needs." items={electricalItems} />} />
               <Route path="/products/electronics" element={<CategoryPage title="Electronics Products" subtitle="Components, adapters, sensors, power supplies, and consumer electronics." items={electronicsItems} />} />
               <Route path="/products/insurance" element={<CategoryPage title="Insurance" subtitle="Policy-ready products and support packs aligned with asset and operational coverage." items={insuranceItems} />} />
