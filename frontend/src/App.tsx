@@ -568,6 +568,9 @@ const HomePage = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => 
 };
 
 const GalleryPage = () => {
+  const extraImages = Object.values(
+    import.meta.glob('./assets/new photos/*.{jpg,JPG,jpeg,JPEG,png,PNG,webp,WEBP}', { eager: true, import: 'default' })
+  ) as string[];
   const images = [
     gallery1,
     gallery2,
@@ -581,6 +584,7 @@ const GalleryPage = () => {
     gallery10,
     gallery11,
     gallery12,
+    ...extraImages,
   ];
   const [preview, setPreview] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
