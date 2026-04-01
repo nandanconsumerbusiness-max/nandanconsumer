@@ -67,7 +67,6 @@ const Navbar = ({
     { label: 'Home', value: 'home' },
     { label: 'About Us', value: 'about' },
     { label: 'Products', value: 'products' },
-    { label: 'Grocery', value: 'grocery' },
     { label: 'Gallery', value: 'gallery' },
     { label: 'Certificates', value: 'certificates' },
     { label: 'Contact', value: 'contact' },
@@ -78,6 +77,7 @@ const Navbar = ({
     { label: 'Insurance', href: '/products/insurance' },
     { label: 'Real Estate', href: '/products/real-estate' },
     { label: 'Finance', href: '/products/finance' },
+    { label: 'Grocery', href: '/grocery' },
   ];
 
 
@@ -261,7 +261,6 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (p: Page) => void }) => {
               <li><button onClick={() => setCurrentPage('home')} className="hover:text-slate-900 transition-colors">Home</button></li>
               <li><button onClick={() => setCurrentPage('about')} className="hover:text-slate-900 transition-colors">About Us</button></li>
               <li><button onClick={() => setCurrentPage('products')} className="hover:text-slate-900 transition-colors">Products</button></li>
-              <li><button onClick={() => setCurrentPage('grocery')} className="hover:text-slate-900 transition-colors">Grocery</button></li>
               <li><button onClick={() => setCurrentPage('certificates')} className="hover:text-slate-900 transition-colors">Certificates</button></li>
               <li><button onClick={() => setCurrentPage('contact')} className="hover:text-slate-900 transition-colors">Contact</button></li>
             </ul>
