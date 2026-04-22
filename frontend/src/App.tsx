@@ -1137,14 +1137,16 @@ const ComingSoonPage = ({ title }: { title: string }) => {
 };
 
 const ContactPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [submittedLead, setSubmittedLead] = useState({ name: '', phone: '' });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
+    setSubmittedLead({ name: formData.name, phone: formData.phone });
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
     setFormData({ name: '', email: '', phone: '', message: '' });
   };
 
@@ -1272,15 +1274,158 @@ const ContactPage = () => {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0 }}
-                      className="mt-6 p-4 bg-emerald-50 text-emerald-700 rounded-lg border border-emerald-100 text-center font-medium"
+                      className="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 p-6"
                     >
-                      Thank you! Your message has been sent successfully.
+                      <p className="text-center text-base font-semibold text-emerald-700">
+                        Thank you! Your message has been sent successfully.
+                      </p>
+                      <p className="mt-2 text-center text-sm text-emerald-700/90">
+                        Continue to the payment page to choose package and pay via QR.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const params = new URLSearchParams({
+                            name: submittedLead.name,
+                            phone: submittedLead.phone,
+                          });
+                          navigate(`/payment?${params.toString()}`);
+                        }}
+                        className="mt-6 w-full rounded-lg bg-brand-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-brand-700"
+                      >
+                        Continue To Payment Page
+                      </button>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
             </div>
           </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+const PaymentPage = () => {
+  const location = useLocation();
+  const [selectedPlan, setSelectedPlan] = useState<'basic' | 'standard' | 'premium' | null>(null);
+
+  const params = new URLSearchParams(location.search);
+  const customerName = params.get('name') || 'Customer';
+  const customerPhone = params.get('phone') || 'Not shared';
+  const upiId = 'nandanconsumer@upi';
+  const whatsappNumber = '916301721221';
+
+  const planOptions: { id: 'basic' | 'standard' | 'premium'; name: string; price: number; description: string }[] = [
+    { id: 'basic', name: 'Basic', price: 499, description: 'Best for first-time buyers and essential support.' },
+    { id: 'standard', name: 'Standard', price: 999, description: 'Balanced package with priority response.' },
+    { id: 'premium', name: 'Premium', price: 1999, description: 'Complete support with premium guidance.' },
+  ];
+
+  const selectedPlanDetails = planOptions.find((plan) => plan.id === selectedPlan) || null;
+
+  const getUpiPaymentLink = (planName: string, amount: number) => {
+    const upiParams = new URLSearchParams({
+      pa: upiId,
+      pn: 'Nandan Consumer Equipments',
+      am: amount.toString(),
+      cu: 'INR',
+      tn: `${planName} package payment`,
+    });
+    return `upi://pay?${upiParams.toString()}`;
+  };
+
+  const paymentQrLink = selectedPlanDetails
+    ? `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(
+      getUpiPaymentLink(selectedPlanDetails.name, selectedPlanDetails.price),
+    )}`
+    : '';
+
+  const openWhatsApp = () => {
+    if (!selectedPlanDetails) return;
+    const message = `Hi, I have made payment for ${selectedPlanDetails.name} package (Rs. ${selectedPlanDetails.price}). My name is ${customerName}, phone ${customerPhone}. I am sharing my payment screenshot here.`;
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.location.href = whatsappUrl;
+  };
+
+  return (
+    <div className="pt-16">
+      <section className="bg-gradient-to-br from-[#0ea5e9] via-[#2563eb] to-[#7c3aed] py-20 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-bold mb-4">Payment</h1>
+          <p className="text-white/90 max-w-2xl">Select your package, pay by QR, then share payment screenshot on WhatsApp.</p>
+        </div>
+      </section>
+
+      <section className="py-24 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
+            <p className="text-base font-semibold text-emerald-700">Thank you for your enquiry, {customerName}.</p>
+            <p className="mt-2 text-sm text-emerald-700/90">Choose a package below to continue.</p>
+          </div>
+
+          <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 className="text-center text-sm font-bold uppercase tracking-wider text-slate-800">Choose a Package</h3>
+            <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
+              {planOptions.map((plan) => (
+                <button
+                  key={plan.id}
+                  type="button"
+                  onClick={() => setSelectedPlan(plan.id)}
+                  className={`rounded-xl border p-4 text-left transition-all ${
+                    selectedPlan === plan.id
+                      ? 'border-brand-500 bg-white shadow-lg shadow-brand-100'
+                      : 'border-slate-200 bg-white hover:border-brand-300'
+                  }`}
+                >
+                  <p className="text-base font-bold text-slate-900">{plan.name}</p>
+                  <p className="mt-1 text-lg font-extrabold text-brand-700">Rs. {plan.price}</p>
+                  <p className="mt-2 text-xs text-slate-600">{plan.description}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <AnimatePresence>
+            {selectedPlanDetails && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+              >
+                <h4 className="text-xl font-bold text-slate-900">Scan and Pay Rs. {selectedPlanDetails.price}</h4>
+                <p className="mt-1 text-sm text-slate-600">
+                  Selected Package: <span className="font-semibold text-slate-800">{selectedPlanDetails.name}</span>
+                </p>
+
+                <div className="mt-4 flex flex-col items-center gap-4 md:flex-row md:items-start">
+                  <img
+                    src={paymentQrLink}
+                    alt={`${selectedPlanDetails.name} package payment QR`}
+                    className="h-[220px] w-[220px] rounded-xl border border-slate-200 object-cover"
+                  />
+                  <div className="w-full rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+                    <p><span className="font-semibold">Amount:</span> Rs. {selectedPlanDetails.price}</p>
+                    <p className="mt-1"><span className="font-semibold">UPI ID:</span> {upiId}</p>
+                    <p className="mt-1"><span className="font-semibold">Mobile:</span> {customerPhone}</p>
+                    <p className="mt-3 text-xs text-slate-500">
+                      After payment, click below to open WhatsApp and share screenshot.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={openWhatsApp}
+                  className="mt-5 w-full rounded-lg bg-brand-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-brand-700"
+                >
+                  I Have Paid - Open WhatsApp
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </section>
     </div>
@@ -2136,6 +2281,7 @@ function AppShell() {
               <Route path="/certificates" element={<CertificatesPage />} />
               <Route path="/signup" element={<SignUpPage setCurrentPage={go} setIsLoggedIn={setIsLoggedIn} />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/payment" element={<PaymentPage />} />
               <Route path="/privacy" element={<PrivacyPolicyPage />} />
               <Route path="/terms" element={<TermsPage />} />
               <Route path="/dashboard" element={<DashboardPage setCurrentPage={go} setIsLoggedIn={setIsLoggedIn} />} />
